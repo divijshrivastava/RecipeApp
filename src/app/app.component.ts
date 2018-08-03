@@ -8,9 +8,17 @@ import { Recipe } from './model/recipe';
 })
 export class AppComponent {
 
-  recipe: Recipe;
+  recipes: Recipe[];
   constructor() {
-   this.recipe = new Recipe('Dosa', 'South Indian Roti: It\'s very delicious', null, null, null);
+   this.recipes = [
+     (new Recipe('Dosa',
+      'South Indian Roti: It\'s very delicious',
+       null, null, null)),
+      new Recipe('Pav Bhaji', 'Punjabi Dish: It\'s very very tasty', 
+    null, null, null), 
+    (new Recipe('Kaju Kari', 'Consists of cashewnuts and gravy', null, null, null))
+      ]
+   ;
   }
 
 }
