@@ -1,5 +1,4 @@
 <h1>These are our recipes.</h1>
 
-<div *ngFor="let recipe of recipes">
-  <app-recipe-summary [recipe] = "recipe" ></app-recipe-summary>
-</div>
+<app-recipe-summary *ngFor="let recipe of recipes" [recipe] = "recipe" >
+</app-recipe-summary>

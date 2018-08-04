@@ -2,6 +2,7 @@ div.cover-photo-holder img{
     width: 150px;
     height: 150px;
     margin: 5px;
+    float: right;
 }
 
 .recipe{
