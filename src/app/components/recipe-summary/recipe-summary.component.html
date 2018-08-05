@@ -1,4 +1,4 @@
-<div  class="recipe panel panel-default" style="max-width: 500px">
+<div class="recipe panel panel-default" style="max-width: 500px">
 
   <div class="panel-heading">
     <h3 class="panel-title">{{ recipe.title }}</h3>
@@ -9,5 +9,11 @@
       <img src="{{ recipe.cover_photo?recipe.cover_photo:'../assets/empty-bowl.png'}}" style="width: 150px; height: 150px; margin: 6px"
       />
     </div>
+    <div style="font-weight: bold; float: left; width: 150px">Preparation Time: </div>
+    <div>{{recipe.preparation_time}} minutes</div>
+    <div style="font-weight: bold; width: 150px">For {{recipe.feeds_this_many}} people</div>
   </div>
+
+  <div style="font-size: 75%; cursor:pointer; " (click)="zoomInClicked()">Zoom</div>
+
 </div>

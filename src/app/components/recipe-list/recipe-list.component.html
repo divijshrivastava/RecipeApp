@@ -1,4 +1,39 @@
 <h1>These are our recipes.</h1>
 
-<app-recipe-summary *ngFor="let recipe of recipes" [recipe] = "recipe" >
+<app-recipe-summary *ngFor="let recipe of recipes" [recipe]=" recipe " (zoomIn)="zoomClicked(recipe)"> //if zoomIn event is fired.
 </app-recipe-summary>
+
+<div style="clear:both">
+  <div class="newrecipe panel panel-default">
+    <div class="panel-heading">
+      <h4>Add new recipe</h4>
+    </div>
+    <div class="panel-body">
+      <div class="input-group">
+        <input type="text" [(ngModel)]="recipe_in_progress.title" class="form-control" name="title" placeholder="Recipe Title" />
+      </div>
+      <div class="input-group">
+        <textarea row="5" [(ngModel)]="recipe_in_progress.description" class="form-control" placeholder="Description" name="description"></textarea>
+      </div>
+      <div class="input-group">
+        <input type="text" [(ngModel)]="recipe_in_progress.feeds_this_many" class="form-control" placeholder="Feeds this many" name="feeds_this_many"
+        />
+        <span class="input-group-addon">people</span>
+      </div>
+      <div class="input-group">
+        <input type="text" [(ngModel)]="recipe_in_progress.preparation_time" class="form-control" placeholder="Time taken to prepare"
+          name="preparation_time" />
+        <span class="input-group-addon">minutes</span>
+      </div>
+      <div class="input-group">
+        <input type="button" value="Add Recipe" (click)="addRecipeClicked()" />
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div>
+  <button class="input-group" (click)="removeRecipe()">Delete recipe</button>
+</div>

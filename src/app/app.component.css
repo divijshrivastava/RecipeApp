@@ -1,0 +1,12 @@
+.newrecipe{
+    margin: 10px;
+    width: 700px;
+}
+
+div.input-group{
+    margin: 10px 0;
+}
+
+div textarea{
+    width:600px;
+}
