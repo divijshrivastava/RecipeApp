@@ -1,19 +1,33 @@
-div.cover-photo-holder img{
-    width: 150px;
-    height: 150px;
-    margin: 5px;
-    float: right;
+div.cover-photo-holder img {
+  width: 150px;
+  height: 150px;
+  margin: 5px;
+  float: right;
 }
 
-.recipe{
-    float: left;
-    width: 97%;
-    margin: 10px 0;
+.recipe {
+  background-color: #bbbb;
+  float: left;
+  width: 97%;
+  margin: 10px ;
+  max-width: 500px;
 }
 
-@media (min-width: 1024px){
-    .recipe{
-        width: 500px;
-        margin: 10px 10px;
-    }
+.dark_background {
+  float: left;
+  width: 97%;
+  margin: 10px;
+  max-width: 500px;
+  background-color: #aaa;
+}
+
+@media (min-width: 1024px) {
+  .recipe {
+    width: 500px;
+    margin: 10px ;
+  }
+  .dark_background {
+    width: 500px;
+    margin: 10px ;
+  }
 }

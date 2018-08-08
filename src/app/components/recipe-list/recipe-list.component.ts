@@ -11,6 +11,8 @@ export class RecipeListComponent {
 
   recipes: Recipe[];
   recipe_in_progress: Recipe;
+  dark_background: Boolean;
+  current_styles: any = { 'font-size': '150%' };
 
   public addRecipeClicked() {
     console.log('addRecipeClicked');
@@ -30,7 +32,7 @@ export class RecipeListComponent {
   constructor() {
 
     this.recipe_in_progress = Recipe.inputRecipe();
-
+    this.dark_background = false;
     this.recipes = [
       (new Recipe('Dosa',
         'South Indian Roti: It\'s very delicious', 3, 50,
@@ -41,6 +43,19 @@ export class RecipeListComponent {
         null, null, null))
     ]
       ;
+  }
+
+  public toggleFont() {
+
+    if (this.current_styles['font-size'] === '150%') {
+      this.current_styles['font-size'] = '175%';
+    } else {
+      this.current_styles['font-size'] = '150%';
+    }
+  }
+
+  public toggleBackground() {
+      this.dark_background = !this.dark_background;
   }
 
 
