@@ -1,22 +1,22 @@
-<div [ngStyle]='current_styles' 
-[ngClass]='dark_back?"recipe panel panel-default":"dark_background panel panel-default"'
->
+<div [ngStyle]='current_styles' [ngClass]='dark_back?"recipe panel panel-default":"dark_background panel panel-default"'
+  (click)='userClicked()'>
+
 
   <div class="panel-heading">
     <h3 class="panel-title">{{ recipe.title }}</h3>
   </div>
   <div class="panel-body">
     <p>{{ recipe.description }}</p>
-    <div class=" cover-photo-holder " style="float:right" >
-      <img src="{{ recipe.cover_photo?recipe.cover_photo:'../assets/empty-bowl.png'}}" 
-      style="width: 150px; height: 150px; margin: 6px"
+    <div class=" cover-photo-holder " style="float:right">
+      <img src="{{ recipe.cover_photo?recipe.cover_photo:'../assets/empty-bowl.png'}}" style="width: 150px; height: 150px; margin: 6px"
       />
     </div>
-    <div class="data_title">Preparation Time: </div>
-    <div>{{recipe.preparation_time}} minutes</div>
-    <div style="font-weight: bold; width: 150px">For {{recipe.feeds_this_many}} people</div>
+    <div class="data_title">Preparation Time:
+      <span class="data_variable">{{recipe.preparation_time}} minutes</span>
+    </div>
+    <div class="data_title">Feeds this many people:
+      <span>{{recipe.feeds_this_many}}</span>
+    </div>
   </div>
-
-  <div style="font-size: 75%; cursor:pointer; " (click)="zoomInClicked()">Zoom</div>
 
 </div>

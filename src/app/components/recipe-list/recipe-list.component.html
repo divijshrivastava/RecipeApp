@@ -1,12 +1,8 @@
 <h1 [ngStyle]="current_styles">These are our recipes.</h1>
-<div >
-  <input type="button" value="Toggle Font size" (click)="toggleFont()">
-  <input type="button" value="Toggle Background" (click)="toggleBackground()">
-</div>
 
-<app-recipe-summary *ngFor="let recipe of recipes" 
-[dark_back] = "dark_background"
-[recipe]=" recipe " (zoomIn)="zoomClicked(recipe)"> // if zoomIn event is fired.
+<app-recipe-summary *ngFor="let recipe of recipes"
+ [dark_back]="dark_background" [recipe]="recipe" (userClick)="userSelectedRecipe($event)"
+(zoomIn)='zoomClicked($event)'  >  // if zoomIn event is fired.
 </app-recipe-summary>
 <div style="clear:both">
   <div class="newrecipe panel panel-default">
@@ -33,10 +29,8 @@
       <div class="input-group">
         <input type="button" value="Add Recipe" (click)="addRecipeClicked()" />
       </div>
-
     </div>
   </div>
-
 </div>
 
 <div>

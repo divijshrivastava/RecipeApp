@@ -20,6 +20,13 @@ export class RecipeSummaryComponent {
   @Output()
   zoomIn: EventEmitter<Recipe> = new EventEmitter();
 
+  @Output()
+  userClick: EventEmitter<number> = new EventEmitter();
+
+  userClicked() {
+    this.userClick.emit(this.recipe.id);
+  }
+
   public zoomInClicked() {
     this.zoomIn.emit(this.recipe);
     console.log(this.dark_back);

@@ -2,6 +2,7 @@ import { Ingredient } from './ingredient';
 import { Instruction } from './instruction';
 
 export class Recipe {
+    public id: number;
     public title: string;
     public description: string;
     public feeds_this_many: number; // people
@@ -9,14 +10,28 @@ export class Recipe {
     public ingredients: Ingredient[];
     public instructions: Instruction[];
     public cover_photo: string;
+    public keywords: string[];
 
     public static inputRecipe(): Recipe {
-        return new Recipe('', '', 1, 1, null, null, null);
+        return new Recipe(1, '', '', 1, 1, null, null, null, null);
     }
 
+    public static recipeFromJson(obj: any) {
+        return new Recipe(obj.id, obj.title, obj.description,
+            obj.feeds_this_many,
+            obj.preparation_time,
+            obj.ingredients,
+            obj.instructions,
+            obj.cover_photo,
+            obj.keywords);
+    }
 
-
-    constructor(t: string, d: string, ftm: number, pt: number, ingr: Ingredient[], instr: Instruction[], cp: string) {
+    constructor(id: number,
+        t: string,
+        d: string, ftm: number, pt: number, ingr: Ingredient[], instr: Instruction[],
+        cp: string,
+        keywords: string[]) {
+        this.id = id;
         this.title = t;
         this.description = d;
         this.feeds_this_many = ftm;
@@ -24,5 +39,6 @@ export class Recipe {
         this.ingredients = ingr;
         this.instructions = instr;
         this.cover_photo = cp;
+        this.keywords = keywords;
     }
 }
