@@ -1,13 +1,15 @@
-<div [ngStyle]='current_styles' [ngClass]='dark_back?"recipe panel panel-default":"dark_background panel panel-default"'
- >
+<div [ngStyle]='current_styles' 
+[ngClass]='dark_back?"recipe panel panel-default":"dark_background panel panel-default"'
+>
 
-  <div class="panel-heading" >
+  <div class="panel-heading">
     <h3 class="panel-title">{{ recipe.title }}</h3>
   </div>
   <div class="panel-body">
     <p>{{ recipe.description }}</p>
     <div class=" cover-photo-holder " style="float:right">
-      <img src="{{ recipe.cover_photo?recipe.cover_photo:'../assets/empty-bowl.png'}}" style="width: 150px; height: 150px; margin: 6px"
+      <img src="{{ recipe.cover_photo?recipe.cover_photo:'../assets/empty-bowl.png'}}" 
+      style="width: 150px; height: 150px; margin: 6px"
       />
     </div>
     <div style="font-weight: bold; float: left; width: 150px">Preparation Time: </div>
