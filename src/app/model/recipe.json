@@ -1,0 +1,76 @@
+[{
+    "id": 1,
+    "title": "Dosa",
+    "description": "South Indian Roti: It's very delicious",
+    "feeds_this_many": 3,
+    "preparation_time": 50,
+    "ingredients": [{
+        "ingredient": "parboiled rice",
+        "measure": "3/4 cup"
+      },
+      {
+        "ingredient": "regular rice",
+        "measure": "3/4 cup"
+      }
+    ],
+    "instructions": [{
+        "instruction": "Cut all the vegetables",
+        "photo": null
+      },
+      {
+        "instruction": "Boil the rice",
+        "photo": null
+      }
+    ],
+    "cover_photo": null,
+    "keywords": ["South Indian", "Rice Dish"]
+  },
+  {
+    "id": 2,
+    "title": "Pav Bhaji",
+    "description": "South Indian Roti: It's very delicious",
+    "feeds_this_many": 3,
+    "preparation_time": 50,
+    "ingredients": [
+
+      {
+        "ingredient": "Potatoes",
+        "measure": "2 medium"
+      },
+      {
+        "ingredient": "Green Peas",
+        "measure": "1/2 cup"
+      }
+
+    ],
+    "instructions": [{
+      "instruction": "Cut all the vegetables",
+      "photo": null
+
+    }],
+    "cover_photo": null,
+    "keywords": null
+  },
+  {
+    "id": 3,
+    "title": "Kaju Kari",
+    "description": "South Indian Roti: It's very delicious",
+    "feeds_this_many": 3,
+    "preparation_time": 50,
+    "ingredients": [{
+        "ingredient": "Potatoes",
+        "measure": "2 medium"
+      },
+      {
+        "ingredient": "Green Peas",
+        "measure": "1/2 cup"
+      }
+    ],
+    "instructions": [{
+      "instruction": "Cut all the vegetables",
+      "photo": null
+    }],
+    "cover_photo": null,
+    "keywords": null
+  }
+]
