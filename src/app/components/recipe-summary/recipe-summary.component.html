@@ -7,7 +7,7 @@
   </div>
   <div class="panel-body">
     <p>{{ recipe.description }}</p>
-    <div class=" cover-photo-holder " style="float:right">
+    <div class=" cover-photo-holder " style="float:right" *ngIf="recipe.cover_photo">
       <img src="{{ recipe.cover_photo?recipe.cover_photo:'../assets/empty-bowl.png'}}" 
       style="width: 150px; height: 150px; margin: 6px"
       />
