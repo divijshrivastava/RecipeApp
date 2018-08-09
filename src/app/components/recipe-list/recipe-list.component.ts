@@ -135,4 +135,8 @@ export class RecipeListComponent {
 
   }
 
+  public addNewRecipe(): void {
+    this.router.navigateByUrl('newRecipe');
+  }
+
 }

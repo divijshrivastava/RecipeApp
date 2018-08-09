@@ -33,6 +33,10 @@ import { EditNewRecipeComponent } from './components/edit-new-recipe/edit-new-re
         path: '', // used for redirection, when user doesn't enter any path.
         redirectTo: 'recipes',
         pathMatch: 'full'
+      },
+      {
+        path: 'newRecipe',
+        component: EditNewRecipeComponent
       }
 
     ])
