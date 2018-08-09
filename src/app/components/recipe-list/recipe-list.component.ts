@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../../model/recipe';
 import { Router } from '../../../../node_modules/@angular/router';
+import { RecipeService } from '../../services/recipe.service';
 
 @Component({
   selector: 'app-recipe-list',
   templateUrl: './recipe-list.component.html',
   styleUrls: ['./recipe-list.component.css']
 })
-export class RecipeListComponent {
+export class RecipeListComponent implements OnInit {
 
   recipes: Recipe[];
   recipe_in_progress: Recipe;
@@ -30,89 +31,15 @@ export class RecipeListComponent {
     console.log(JSON.stringify(recipe, null, 2));
   }
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private recipeService: RecipeService) {
 
     this.recipe_in_progress = Recipe.inputRecipe();
     this.dark_background = false;
     this.small_font = false;
-    this.recipes = [Recipe.recipeFromJson({
-      'id': 1,
-      'title': 'Idli',
-      'description': 'South Indian Roti: It\'s very delicious',
-      'feeds_this_many': 3,
-      'preparation_time': 50,
-      'ingredients': [{
-        'ingredient': 'parboiled rice',
-        'measure': '3/4 cup'
-      },
-      {
-        'ingredient': 'regular rice',
-        'measure': '3/4 cup'
-      }
-      ],
-      'instructions': [{
-        'instruction': 'Cut all the vegetables',
-        'photo': null
-      },
-      {
-        'instruction': 'Boil the rice',
-        'photo': null
-      }
-      ],
-      'cover_photo': null,
-      'keywords': ['South Indian', 'Rice Dish']
-    }),
+  }
 
-    Recipe.recipeFromJson({
-      'id': 2,
-      'title': 'Pav Bhaji',
-      'description': 'South Indian Roti: It\'s very delicious',
-      'feeds_this_many': 3,
-      'preparation_time': 50,
-      'ingredients': [
-
-        {
-          'ingredient': 'Potatoes',
-          'measure': '2 medium'
-        },
-        {
-          'ingredient': 'Green Peas',
-          'measure': '1/2 cup'
-        }
-
-      ],
-      'instructions': [{
-        'instruction': 'Cut all the vegetables',
-        'photo': null
-      }],
-      'cover_photo': null,
-      'keywords': null
-
-    }),
-
-    Recipe.recipeFromJson({
-      'id': 3,
-      'title': 'Kaju Kari',
-      'description': 'South Indian Roti: It\'s very delicious',
-      'feeds_this_many': 3,
-      'preparation_time': 50,
-      'ingredients': [{
-        'ingredient': 'Potatoes',
-        'measure': '2 medium'
-      },
-      {
-        'ingredient': 'Green Peas',
-        'measure': '1/2 cup'
-      }
-      ],
-      'instructions': [{
-        'instruction': 'Cut all the vegetables',
-        'photo': null
-      }],
-      'cover_photo': null,
-      'keywords': null
-    })
-    ];
+  ngOnInit(): void {
+    this.recipeService.getAllrecipes().then((recipes) => this.recipes = recipes);
   }
 
   public toggleFont() {

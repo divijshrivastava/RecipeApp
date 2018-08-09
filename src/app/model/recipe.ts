@@ -16,8 +16,8 @@ export class Recipe {
         return new Recipe(1, '', '', 1, 1, null, null, null, null);
     }
 
-    public static recipeFromJson(obj: any) {
-        return new Recipe(obj.id, obj.title, obj.description,
+    public static recipeFromJson(obj: any): Recipe {
+        return new Recipe(parseInt(obj.id, 10), obj.title, obj.description,
             obj.feeds_this_many,
             obj.preparation_time,
             obj.ingredients,
