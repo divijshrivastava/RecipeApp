@@ -1,6 +1,8 @@
 <p><a (click)="goBack()" style="cursor:pointer">Go Back</a></p> 
 
-<div class='recipe panel panel-default'>
+<div *ngIf="!recipe">Loading Recipe...</div>
+
+<div *ngIf="recipe" class='recipe panel panel-default'>
 
   <div class="panel-heading">
     <h3 class="panel-title">{{ recipe.title }}</h3>
@@ -28,4 +30,3 @@
 
   </div>
 </div>
-<input type="button" (click)="displayRecipe()" value="Recipe"/>

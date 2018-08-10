@@ -1,6 +1,9 @@
 <h1 [ngStyle]="current_styles">These are our recipes.</h1>
 <div class="btn btn-primary" (click)="addNewRecipe()" style="float:right">Add New Recipe</div>
-<app-recipe-summary *ngFor="let recipe of recipes"
- [dark_back]="dark_background" [recipe]="recipe" (userClick)="userSelectedRecipe($event)"
-(zoomIn)='zoomClicked($event)'  >  // if zoomIn event is fired.
+
+<div *ngIf="!recipe_loaded" style="color: brown">Loading Recipes.. please be patient!</div>
+<div *ngIf="recipe_loaded && (!recipes || !recipes.length)">There are no recipes. Why not add one now?</div>
+<app-recipe-summary *ngFor="let recipe of recipes" [dark_back]="dark_background" [recipe]="recipe"
+ (userClick)="userSelectedRecipe($event)"
+  (zoomIn)='zoomClicked($event)'> // if zoomIn event is fired.
 </app-recipe-summary>

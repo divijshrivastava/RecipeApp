@@ -13,6 +13,7 @@ export class RecipeListComponent implements OnInit {
   recipes: Recipe[];
   recipe_in_progress: Recipe;
   dark_background: Boolean;
+  recipe_loaded: Boolean;
   current_styles: any = { 'font-size': '150%' };
   small_font: Boolean;
 
@@ -32,14 +33,17 @@ export class RecipeListComponent implements OnInit {
   }
 
   constructor(private router: Router, private recipeService: RecipeService) {
-
     this.recipe_in_progress = Recipe.inputRecipe();
     this.dark_background = false;
     this.small_font = false;
+    this.recipe_loaded = false;
   }
 
   ngOnInit(): void {
-    this.recipeService.getAllrecipes().then((recipes) => this.recipes = recipes);
+    this.recipeService.getAllrecipes().then((recipes) => {
+      this.recipes = recipes;
+      this.recipe_loaded = true;
+    });
   }
 
   public toggleFont() {
@@ -57,9 +61,8 @@ export class RecipeListComponent implements OnInit {
     this.dark_background = !this.dark_background;
   }
   public userSelectedRecipe(recipe_id: number) {
-    console.log(recipe_id);
+    console.log('inside recipe-list: ' + recipe_id);
     this.router.navigateByUrl('recipes/' + recipe_id);
-
   }
 
   public addNewRecipe(): void {

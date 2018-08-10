@@ -31,14 +31,24 @@
       <div>
         <div class="btn btn-primary" (click)="addNewIngredient()">Add</div>
       </div>
-      <div class="input-group">
-        <input type="button" value="Add Recipe" (click)="addRecipeClicked()" />
+        <label >Instructions</label>
+      <div class="ingredient" *ngFor="let instruction of recipe_in_progress.instructions, let i=index">
+        <input style="width:40%" type="text" [(ngModel)]='recipe_in_progress.instructions[i].instruction' placeholder="Instruction">
+        <input type="text" [(ngModel)]='recipe_in_progress.instructions[i].photo' placeholder="Photo">
+        <a (click)="removeIngredient(i)" style="font-weight: 80%; margin: 10px">Remove</a>
       </div>
+
+      <div>
+        <div class="btn btn-primary" (click)="addNewInstructions()">Add</div>
       </div>
+ 
+
+     </div>
     </div>
   </div>
 </div>
 
-<div>
-  <button class="input-group" (click)="removeRecipe()">Delete recipe</button>
-</div>
+      <div class="input-group">
+        <input type="button" class="btn btn-primary"value="Add Recipe" (click)="addRecipeClicked()" />
+      </div>
+ 

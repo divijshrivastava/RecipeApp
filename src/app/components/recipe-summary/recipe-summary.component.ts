@@ -27,17 +27,7 @@ export class RecipeSummaryComponent {
     this.userClick.emit(this.recipe.id);
   }
 
-  public zoomInClicked() {
-    this.zoomIn.emit(this.recipe);
-    console.log(this.dark_back);
-    if (this.current_styles['font-size'] === '100%') {
-      this.current_styles = { 'font-size': '150%' };
-    } else {
-      this.current_styles['font-size'] = '100%';
-    }
-  }
-
-  constructor() {
+   constructor() {
     this.dark_back = false;
     this.current_styles = { 'font-size': '100%' };
   }

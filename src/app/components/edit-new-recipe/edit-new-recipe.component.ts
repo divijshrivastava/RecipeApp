@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../../model/recipe';
+import { RecipeService } from '../../services/recipe.service';
+import { Router } from '../../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-edit-new-recipe',
@@ -9,7 +11,7 @@ import { Recipe } from '../../model/recipe';
 export class EditNewRecipeComponent implements OnInit {
 
   recipe_in_progress: Recipe;
-  constructor() {
+  constructor(private recipeService: RecipeService, private router: Router) {
     this.recipe_in_progress = new Recipe(1, '', '', 1, 1, null, null, null, null);
   }
 
@@ -18,6 +20,8 @@ export class EditNewRecipeComponent implements OnInit {
 
   addRecipeClicked() {
     console.log('Add recipe clicked');
+    this.recipeService.addRecipe(this.recipe_in_progress).then((recipe) =>
+      this.router.navigate(['recipes', recipe.id]));
   }
 
   addNewIngredient() {
@@ -30,7 +34,14 @@ export class EditNewRecipeComponent implements OnInit {
 
   removeIngredient(ingredient_index: number): void {
     this.recipe_in_progress.ingredients.splice(ingredient_index, 1);
+  }
 
+  addNewInstructions() {
+    if (!this.recipe_in_progress.instructions) {
+      this.recipe_in_progress.instructions = [{ instruction: null, photo: null }];
+    } else {
+      this.recipe_in_progress.instructions.push({ instruction: null, photo: null });
+    }
   }
 
 }
