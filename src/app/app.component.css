@@ -3,6 +3,31 @@
     width: 700px;
 }
 
+.topnav{
+    background-color: #983C29;
+    overflow: hidden;
+}
+
+.topnav a{
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover{
+    background-color: white;
+    color: #983C29;
+}
+
+.topnav a.active{
+    background-color: #4CAF50;
+    color: white;
+}
+
 div.input-group{
     margin: 10px 0;
 }

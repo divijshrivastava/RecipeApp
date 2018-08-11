@@ -15,7 +15,9 @@ export class RecipeListComponent implements OnInit {
   dark_background: Boolean;
   recipe_loaded: Boolean;
   current_styles: any = { 'font-size': '150%' };
-  small_font: Boolean;
+  small_font: boolean;
+  load_error: boolean;
+  error_text: string;
 
   public addRecipeClicked() {
     console.log('addRecipeClicked');
@@ -32,17 +34,24 @@ export class RecipeListComponent implements OnInit {
     console.log(JSON.stringify(recipe, null, 2));
   }
 
-  constructor(private router: Router, private recipeService: RecipeService) {
+  constructor(private router: Router, private recipeService: RecipeService,
+  ) {
     this.recipe_in_progress = Recipe.inputRecipe();
     this.dark_background = false;
     this.small_font = false;
     this.recipe_loaded = false;
+    this.load_error = false;
   }
 
   ngOnInit(): void {
     this.recipeService.getAllrecipes().then((recipes) => {
       this.recipes = recipes;
       this.recipe_loaded = true;
+    }).catch((err) => {
+      this.load_error = true;
+      const body = JSON.parse(err._body);
+      this.error_text = body.message;
+
     });
   }
 
