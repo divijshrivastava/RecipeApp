@@ -101,18 +101,15 @@ export class EditNewRecipeComponent implements OnInit {
       console.log(this.recipe_in_progress.ingredients.length);
     }
 
-    this.validateForm(event);
   }
 
   removeIngredient(ingredient_index: number): void {
     this.recipe_in_progress.ingredients.splice(ingredient_index, 1);
     console.log(this.recipe_in_progress.ingredients.length);
-    this.validateForm(event);
   }
   removeInstruction(instruction_index: number): void {
     this.recipe_in_progress.instructions.splice(instruction_index, 1);
     console.log('Instruction length' + this.recipe_in_progress.instructions.length);
-    this.validateForm(event);
   }
 
 
@@ -123,7 +120,6 @@ export class EditNewRecipeComponent implements OnInit {
       this.recipe_in_progress.instructions.push({ instruction: null, photo: null });
     }
 
-    this.validateForm(event);
   }
 
 }
