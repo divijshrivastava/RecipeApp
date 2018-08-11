@@ -8,6 +8,11 @@
     overflow: hidden;
 }
 
+.cover_photo_holder{
+    float:right;
+    width: 400px;
+}
+
 .topnav a{
     float: left;
     display: block;

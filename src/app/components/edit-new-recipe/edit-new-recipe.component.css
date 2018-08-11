@@ -3,15 +3,23 @@ div.instruction input.form-control {
   display: inline;
 }
 
-div.instruction{
+div.instruction {
   margin-bottom: 7px;
 }
 
+.newrecipe {
+  float: left;
+  width: 550px;
+}
 
-div.cover-photo-holder img {
+.cover-photo-holder img {
   width: 300px;
   height: 300px;
-  margin: 5px;
+  border: 0px;
+}
+
+.cover-photo-holder{
+  float:right;
 }
 
 div.add-ingredient input,

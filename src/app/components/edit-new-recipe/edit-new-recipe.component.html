@@ -1,33 +1,41 @@
-<div style="clear:both">
-  <div class="newrecipe panel panel-default">
-    <div class="panel-heading">
-      <h4>Add new recipe</h4>
-    </div>
-    <div class="panel-body">
-      <form #recipeForm="ngForm">
+<form [formGroup]="recipeForm">
+  <div class="cover-photo-holder">
+    <input type="file" (change)="readUrl($event)" />
+    <img [src]="
+cover_photo_for_viewing">
+
+  </div>
+
+  <div style="clear:both">
+    <div class="newrecipe panel panel-default">
+      <div class="panel-heading">
+        <h4>Add new recipe</h4>
+      </div>
+      <div class="panel-body">
         <div class="input-group">
-          <input required type="text" [(ngModel)]="recipe_in_progress.title" class="form-control" name="title" placeholder="Recipe Title"
+          <input type="text" [(ngModel)]="recipe_in_progress.title" class="form-control" formControlName="title" placeholder="Recipe Title"
           />
         </div>
         <div class="input-group">
-          <textarea required row="5" [(ngModel)]="recipe_in_progress.description" class="form-control" placeholder="Description" name="description"></textarea>
+          <textarea row="5" [(ngModel)]="recipe_in_progress.description" class="form-control" placeholder="Description" formControlName="description"></textarea>
         </div>
         <div class="input-group">
-          <input required type="number" min="1" max="1000" [(ngModel)]="recipe_in_progress.feeds_this_many" class="form-control" placeholder="Feeds this many"
-            name="feeds_number" name="feeds_this_many" />
+          <input type="number" min="1" max="1000" [(ngModel)]="recipe_in_progress.feeds_this_many" class="form-control" placeholder="Feeds this many"
+            formControlName="feeds_this_many" />
           <span class="input-group-addon">people</span>
         </div>
         <div class="input-group">
-          <input required type="number" min="1" [(ngModel)]="recipe_in_progress.preparation_time" class="form-control" placeholder="Time taken to prepare"
-            name="preparation_time" />
+          <input type="number" min="1" [(ngModel)]="recipe_in_progress.preparation_time" class="form-control" placeholder="Time taken to prepare"
+            formControlName="preparation_time" />
           <span class="input-group-addon">minutes</span>
         </div>
         <div class="form-group">
           <label>Ingredients </label>
           <div class="ingredient" *ngFor="let ingredient of recipe_in_progress.ingredients, let i=index">
-            <input required style="width:40%" type="text" name=`ingredient_{{i}}` [(ngModel)]='recipe_in_progress.ingredients[i].ingredient'
+            <input style="width:40%" type="text" formControlName="ingredient_{{i}}" [(ngModel)]='recipe_in_progress.ingredients[i].ingredient'
               placeholder="Ingredient">
-            <input required type="text" [(ngModel)]='recipe_in_progress.ingredients[i].measure' placeholder="How much?" name="ingredient_measure_{{i}}">
+            <input type="text" [(ngModel)]='recipe_in_progress.ingredients[i].measure' placeholder="How much?" formControlName="ingredient_measure_{{i}}"
+            />
             <a (click)="removeIngredient(i)" style="font-weight: 80%; margin: 10px">Remove</a>
           </div>
 
@@ -35,22 +43,26 @@
             <div class="btn btn-primary" (click)="addNewIngredient()">Add</div>
           </div>
           <label>Instructions</label>
+
           <div class="instruction" *ngFor="let instruction of recipe_in_progress.instructions, let i=index">
-            <input required style="width:40%" type="text" [(ngModel)]='recipe_in_progress.instructions[i].instruction' name="instruction_{{i}}"
-              placeholder="Instruction">
-            <input type="text" [(ngModel)]='recipe_in_progress.instructions[i].photo' placeholder="Photo" name="instruction_photo_{{i}}">
+            <input style="width:40%" type="text" [(ngModel)]="recipe_in_progress.instructions[i].instruction" formControlName="instruction_{{i}}"
+              placeholder="Instruction" />
+            <input type="text" [(ngModel)]="recipe_in_progress.instructions[i].photo" placeholder="Photo" formControlName="instruction_photo_{{i}}"
+            />
             <a (click)="removeInstruction(i)" style="font-weight: 80%; margin: 10px">Remove</a>
           </div>
+
           <div>
             <div class="btn btn-primary" (click)="addNewInstructions()">Add</div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="input-group">
-  <input type="button" class="btn btn-primary" value="Add Recipe" [disabled]="!recipeForm.valid" (click)="addRecipeClicked()"
-  />
-</div>
+  <div class="input-group">
+    <input type="button" [disabled]="recipeForm.invalid" class="btn btn-primary" value="Add Recipe" (click)="addRecipeClicked()"
+    />
+  </div>
+
+</form>
