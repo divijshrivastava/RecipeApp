@@ -1,12 +1,12 @@
-
-<div *ngIf="!load_error && !recipe">Loading Recipe...</div>
+<div *ngIf="!load_error && !recipe">
+  Loading Recipe...</div>
 
 <div *ngIf="load_error">
   <div class="alert alert-danger" role="alert">
-    <span class="glyphicon glyphicon-exclamation-sign"
-    aria-hidden=true></span>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden=true></span>
     <span class="sr-only">Error: </span>
-    {{error_text}} -<a [routerLink] = "['/recipes']">Back to recipe list</a>
+    {{error_text}} -
+    <a [routerLink]="['/recipes']">Back to recipe list</a>
   </div>
 </div>
 
@@ -28,13 +28,10 @@
       <span>{{recipe.feeds_this_many}}</span>
     </div>
     <div class="data_title">Ingredients</div>
-    <ul>
-      <li *ngFor="let ingredient of recipe.ingredients">{{ ingredient.ingredient}} ({{ingredient.measure}})</li>
-    </ul>
-  <div class="data_title">Instructions</div>
-  <ol>
-    <li *ngFor="let instruction of recipe.instructions">{{ instruction.instruction}}</li>
-  </ol>
+    <div class="data_title">Instructions</div>
+    <ol>
+      <li *ngFor="let instruction of recipe.instructions">{{ instruction.instruction}}</li>
+    </ol>
 
   </div>
 </div>

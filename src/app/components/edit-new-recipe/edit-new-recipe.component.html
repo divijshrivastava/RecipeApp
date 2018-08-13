@@ -1,9 +1,7 @@
 <form [formGroup]="recipeForm">
   <div class="cover-photo-holder">
     <input type="file" (change)="readUrl($event)" />
-    <img [src]="
-cover_photo_for_viewing">
-
+    <img [src]="cover_photo_for_viewing">
   </div>
 
   <div style="clear:both">
@@ -43,12 +41,17 @@ cover_photo_for_viewing">
             <div class="btn btn-primary" (click)="addNewIngredient()">Add</div>
           </div>
           <label>Instructions</label>
-
-          <div class="instruction" *ngFor="let instruction of recipe_in_progress.instructions, let i=index">
-            <input style="width:40%" type="text" [(ngModel)]="recipe_in_progress.instructions[i].instruction" formControlName="instruction_{{i}}"
+          <div class="instruction" 
+          *ngFor="let instruction of recipe_in_progress.instructions, let i=index">
+            <input style="width:40%" type="text" 
+            [(ngModel)]="recipe_in_progress.instructions[i].instruction" 
+            formControlName="instruction_{{i}}"
               placeholder="Instruction" />
-            <input type="text" [(ngModel)]="recipe_in_progress.instructions[i].photo" placeholder="Photo" formControlName="instruction_photo_{{i}}"
+            <input type="file"  
+            placeholder="Photo"
+             formControlName="instruction_photo_{{i}}" (change)="readInstUrl(i,$event)"
             />
+            <img [src]="instruction_recipe_photos[i]" style="width:100px; height: 100px"/>
             <a (click)="removeInstruction(i)" style="font-weight: 80%; margin: 10px">Remove</a>
           </div>
 

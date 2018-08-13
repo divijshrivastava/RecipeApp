@@ -16,6 +16,7 @@ export class EditNewRecipeComponent implements OnInit {
   disabled_add_recipe_button: boolean;
   recipeForm: FormGroup;
   cover_photo_for_viewing = 'assets/empty-bowl.png';
+  instruction_recipe_photos: string[];
 
   buildRecipeForm(): void {
     const fg = {
@@ -26,39 +27,31 @@ export class EditNewRecipeComponent implements OnInit {
       'preparation_time':
         new FormControl(this.recipe_in_progress.preparation_time, [Validators.required, Validators.min(1), Validators.max(1000)])
     };
-    if (this.recipe_in_progress.ingredients) {
-      for (let i = 0; i < this.recipe_in_progress.ingredients.length; i++) {
-        fg['ingredient_' + i] =
-          new FormControl(this.recipe_in_progress.ingredients[i].ingredient,
-            [Validators.required]);
-        fg['ingredient_measure_' + i] = new FormControl(
-          this.recipe_in_progress.ingredients[i].measure,
+    for (let i = 0; i < this.recipe_in_progress.ingredients.length; i++) {
+      fg['ingredient_' + i] =
+        new FormControl(this.recipe_in_progress.ingredients[i].ingredient,
           [Validators.required]);
-      }
+      fg['ingredient_measure_' + i] = new FormControl(
+        this.recipe_in_progress.ingredients[i].measure,
+        [Validators.required]);
     }
 
-    if (this.recipe_in_progress.instructions
-      && this.recipe_in_progress.instructions.length > 0) {
-      for (let i = 0; i < this.recipe_in_progress.instructions.length; i++) {
-        fg['instruction_' + i] =
-          new FormControl(this.recipe_in_progress.instructions[i].instruction,
-            [Validators.required]);
-
-        fg['instruction_photo_' + i] =
-          new FormControl(this.recipe_in_progress.instructions[i].photo,
-            []);
-
-      }
+    for (let i = 0; i < this.recipe_in_progress.instructions.length; i++) {
+      fg['instruction_' + i] =
+        new FormControl(this.recipe_in_progress.instructions[i].instruction,
+          [Validators.required]);
+      fg['instruction_photo_' + i] = new FormControl(this.recipe_in_progress.instructions[i].photo);
+      //          new FormControl(this.recipe_in_progress.instructions[i].photo,
+      //            []);
     }
     this.recipeForm = new FormGroup(fg);
-
   }
 
   constructor(private recipeService: RecipeService, private router: Router) {
-    this.recipe_in_progress = new Recipe(1, '', '', 1, 1, null, null, null, null);
+    this.recipe_in_progress = new Recipe(1, '', '', 1, 1, [], [], null, null);
     this.disabled_add_recipe_button = true;
+    this.instruction_recipe_photos = [];
     this.buildRecipeForm();
-
   }
 
   readUrl(event): void {
@@ -68,18 +61,32 @@ export class EditNewRecipeComponent implements OnInit {
       reader.onload = (rdr) => {
         this.cover_photo_for_viewing = reader.result;
       };
+
       reader.readAsDataURL(event.target.files[0]);
+
+      setTimeout(() => { console.log('Cover photo:' + this.cover_photo_for_viewing); }, 4000);
     }
   }
 
+  readInstUrl(i, event): void {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = (rdr) => {
+        this.instruction_recipe_photos[i] = reader.result;
+        console.log('Inside readInstUrl, instruction_recipe_photos[' + i + ']: ' + this.instruction_recipe_photos[i]);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+
+      setTimeout(() => console.log('instruction photo' + this.instruction_recipe_photos[i]));
+    }
+  }
   ngOnInit() {
   }
 
   addRecipeClicked() {
-    console.log('Add recipe clicked');
     this.recipeService.addRecipe(this.recipe_in_progress).then((recipe) =>
       this.router.navigate(['recipes', recipe.id]));
-
   }
 
   validateForm(event): void {
@@ -147,7 +154,6 @@ export class EditNewRecipeComponent implements OnInit {
       this.recipe_in_progress.ingredients = [{ ingredient: null, measure: null }];
     } else {
       this.recipe_in_progress.ingredients.push({ ingredient: null, measure: null });
-      console.log(this.recipe_in_progress.ingredients.length);
     }
 
     this.buildRecipeForm();
@@ -163,14 +169,21 @@ export class EditNewRecipeComponent implements OnInit {
   addNewInstructions() {
     if (!this.recipe_in_progress.instructions) {
       this.recipe_in_progress.instructions = [{ instruction: null, photo: null }];
+      this.instruction_recipe_photos = [];
+      console.log('addNewInstructions a');
     } else {
       this.recipe_in_progress.instructions.push({ instruction: null, photo: null });
+      this.instruction_recipe_photos.push('');
+      console.log('addNewInstructions b instruction_recipe_photos length=' + this.instruction_recipe_photos.length);
     }
+    console.log('Instruction recipe photo' + this.instruction_recipe_photos);
     this.buildRecipeForm();
   }
+
   removeInstruction(instruction_index: number): void {
     this.recipe_in_progress.instructions.splice(instruction_index, 1);
     console.log('Instruction length' + this.recipe_in_progress.instructions.length);
+    this.instruction_recipe_photos.splice(instruction_index, 1);
     this.buildRecipeForm();
   }
 }
