@@ -27,10 +27,37 @@ export class RecipeService {
       .then(response => response.json().data as Recipe).catch(this.handleError);
   }
 
-  addRecipe(recipe: Recipe): Promise<Recipe> {
+  // First upload the recipe
+  // second, upload the images
+  // cover_photo
+  // preparation_photo
+
+  addRecipe(recipe: Recipe, files: {}): Promise<Recipe> {
 
     return this.http.put(RECIPE_SERVER + '/v1/recipes.json', recipe).toPromise()
-      .then(response => response.json().data as Recipe).catch(this.handleError);
+      .then((response) => {
+        const final_recipe: Recipe = response.json().data as Recipe;
+        const formData: FormData = new FormData();
+
+        if (files['cover_photo']) {
+          const file: File = files['cover_photo'];
+          formData.append('cover_photo', file, file.name);
+        }
+
+        if (files['instruction_photo']) {
+          for (let i = 0; i < files['instruction_photo'].length; i++) {
+            if (files['instruction_photo'][i]) {
+              const file: File = files['instruction_photo'][i];
+              formData.append('preparation_photos_' + i, file, file.name);
+            }
+          }
+        }
+
+        return this.http.post(RECIPE_SERVER + `/v1/recipes/${final_recipe.id}/images`,
+          formData).toPromise().then(image_response => final_recipe)
+          .catch(this.handleError);
+
+      }).catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {

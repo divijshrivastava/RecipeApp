@@ -25,6 +25,18 @@ div.cover-photo-holder img {
   background-color: rgb(238, 241, 245);
 }
 
+.ingredients {
+
+  float:left;
+  background-color: #f01;
+
+}
+
+.instructions {
+  float: right;
+  background-color: #91f;
+}
+
 .data_title {
   float:none;
   margin: 10px;

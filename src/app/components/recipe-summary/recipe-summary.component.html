@@ -1,6 +1,5 @@
 <div [ngStyle]='current_styles' [ngClass]='dark_back?"
-recipe panel panel-default":"dark_background panel panel-default"'
-  (click)='userClicked()'>
+recipe panel panel-default":"dark_background panel panel-default"' (click)='userClicked()'>
 
 
   <div class="panel-heading">
@@ -8,8 +7,9 @@ recipe panel panel-default":"dark_background panel panel-default"'
   </div>
   <div class="panel-body">
     <p>{{ recipe.description }}</p>
-    <div class=" cover-photo-holder " style="float:right">
-      <img src="{{ recipe.cover_photo?recipe.cover_photo:'../assets/empty-bowl.png'}}" style="width: 150px; height: 150px; margin: 6px"
+    <div class=" cover-photo-holder ">
+      <img src="{{ recipe.cover_photo? 'http://localhost:8080/images/'+ recipe.cover_photo:'../assets/empty-bowl.png'}}"
+       style="width: 150px; height: 150px; margin: 6px"
       />
     </div>
     <div class="data_title">Preparation Time:
