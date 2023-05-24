@@ -1,0 +1,102 @@
+{
+    "id": "1",
+    "title": "Upma",
+    "description": "Upma, a traditional South Indian breakfast dish, is a delightful blend of semolina, spices, and vegetables. With its unique texture and aromatic flavors, Upma has become a popular choice not only for breakfast but also as a light meal option throughout the day. Whether you're looking for a quick and wholesome breakfast or a comforting dish to satisfy your cravings, Upma offers a fulfilling experience that is both nutritious and delicious.",
+    "feeds_this_many": 2,
+    "preparation_time": 30,
+    "recipeName": "Upma",
+    "ingredients": [
+        {
+            "ingredient": "semolina (rava or sooji)",
+            "measure": "1 cup"
+        },
+        {
+            "ingredient": "oil or ghee",
+            "measure": "2 tablespoons"
+        },
+        {
+            "ingredient": "mustard seeds",
+            "measure": "1 teaspoon"
+        },
+        {
+            "ingredient": "cumin seeds",
+            "measure": "1 teaspoon"
+        },
+        {
+            "ingredient": "split urad dal (black gram lentils)",
+            "measure": "1 tablespoon"
+        },
+        {
+            "ingredient": "chana dal (split Bengal gram)",
+            "measure": "1 tablespoon"
+        },
+        {
+            "ingredient": "small onion, finely chopped",
+            "measure": "1"
+        },
+        {
+            "ingredient": "green chili, finely chopped",
+            "measure": "1"
+        },
+        {
+            "ingredient": "ginger, grated",
+            "measure": "1-inch piece"
+        },
+        {
+            "ingredient": "curry leaves",
+            "measure": "8-10"
+        },
+        {
+            "ingredient": "water",
+            "measure": "2 cups"
+        },
+        {
+            "ingredient": "salt",
+            "measure": "to taste"
+        },
+        {
+            "ingredient": "lemon juice (optional)",
+            "measure": "1 tablespoon"
+        },
+        {
+            "ingredient": "fresh coriander leaves, chopped for garnish",
+            "measure": "as needed"
+        }
+    ],
+    "instructions": [
+        {
+            "instruction": "Heat oil or ghee in a pan or kadai over medium heat."
+        },
+        {
+            "instruction": "Add mustard seeds and let them splutter. Then add cumin seeds, urad dal, and chana dal. Sauté until the dals turn golden brown."
+        },
+        {
+            "instruction": "Add chopped onions, green chili, grated ginger, and curry leaves. Sauté until the onions turn translucent."
+        },
+        {
+            "instruction": "Add semolina (rava) to the pan and roast it on medium-low heat for about 5-6 minutes, stirring continuously until it turns aromatic and lightly golden in color."
+        },
+        {
+            "instruction": "In a separate saucepan, bring water to a boil."
+        },
+        {
+            "instruction": "Slowly pour the boiling water into the roasted semolina, stirring continuously to prevent lumps from forming."
+        },
+        {
+            "instruction": "Add salt to taste and mix well. Reduce the heat to low and cover the pan with a lid. Let it cook for about 3-4 minutes or until the semolina absorbs the water and becomes soft and fluffy. Stir occasionally."
+        },
+        {
+            "instruction": "If desired, add lemon juice and mix well. This step is optional but adds a tangy flavor to the upma."
+        },
+        {
+            "instruction": "Remove the pan from heat and let it rest for a couple of minutes."
+        },
+        {
+            "instruction": "Garnish with freshly chopped coriander leaves."
+        }
+    ],
+    "cover_photo": "Rava-Upma.jpg",
+    "keywords": [
+        "recipe"
+    ]
+}

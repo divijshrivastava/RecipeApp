@@ -18,7 +18,7 @@
   <div class="panel-body">
     <p>{{ recipe.description }}</p>
     <div class="cover-photo-holder">
-      <img src="{{ recipe.cover_photo? 'http://localhost:8080/images/'+recipe.cover_photo:'../assets/empty-bowl.png'}}" style="width: 150px; height: 150px; margin: 6px"
+      <img src="{{ recipe.cover_photo? 'http://localhost:4200/assets/images/'+recipe.cover_photo:'../assets/empty-bowl.png'}}" style="width: 150px; height: 150px; margin: 6px"
       />
     </div>
     <div class="data_title">Preparation Time:
@@ -40,8 +40,8 @@
       <ol>
         <li *ngFor="let instruction of recipe.instructions">
           {{ instruction.instruction}}
-          <img src="http://localhost:8080/images/{{instruction.photo}}" border="0" style="width:150px; height: 150px;
-          object-fit: cover"/>
+          <img src="/assets/images/{{instruction.photo}}" border="0" style="width:150px; height: 150px;
+          object-fit: cover" *ngIf="instruction.photo"/>
         </li>
       </ol>
     </div>

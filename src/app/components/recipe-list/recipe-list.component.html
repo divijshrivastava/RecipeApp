@@ -3,7 +3,8 @@
 </div>
 
 <div *ngIf="!recipe_loaded && !load_error" style="color: brown">Loading Recipes.. please be patient!</div>
-<div *ngIf="!load_error && recipe_loaded && (!recipes || !recipes.length)">There are no recipes. Why not add one now?</div>
-  <app-recipe-summary *ngFor="let recipe of recipes" [dark_back]="dark_background" [recipe]="recipe" (userClick)="userSelectedRecipe($event)"
-    (zoomIn)='zoomClicked($event)'> // if zoomIn event is fired.
-  </app-recipe-summary>
+<div *ngIf="!load_error && recipe_loaded && (!recipes || !recipes.length)">There are no recipes. Why not add one now?
+</div>
+<app-recipe-summary *ngFor="let recipe of recipes" [dark_back]="dark_background" [recipe]="recipe"
+  (userClick)="userSelectedRecipe($event)" (zoomIn)='zoomClicked($event)'> // if zoomIn event is fired.
+</app-recipe-summary>

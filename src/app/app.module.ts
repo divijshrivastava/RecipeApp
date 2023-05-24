@@ -8,7 +8,8 @@ import { RecipeSummaryComponent } from './components/recipe-summary/recipe-summa
 import { RecipeDetailsComponent } from './components/recipe-details/recipe-details.component';
 import { EditNewRecipeComponent } from './components/edit-new-recipe/edit-new-recipe.component';
 import { RecipeService } from './services/recipe.service';
-import { HttpModule } from '../../node_modules/@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -21,8 +22,8 @@ import { HttpModule } from '../../node_modules/@angular/http';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
-    ReactiveFormsModule,
+    HttpClientModule,
+     ReactiveFormsModule,
     RouterModule.forRoot([
       {
         path: 'recipes',

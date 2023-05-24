@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Recipe } from '../model/recipe';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-const RECIPE_SERVER = 'http://localhost:8080';
+const RECIPE_SERVER = ``;
 
 @Injectable({
   providedIn: 'root'
@@ -10,33 +11,23 @@ const RECIPE_SERVER = 'http://localhost:8080';
 export class RecipeService {
 
   recipes: Recipe[];
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
 
   }
 
-  getAllrecipes(): Promise<Recipe[]> {
-    return this.http.get(RECIPE_SERVER + '/v1/recipes.json')
-      .toPromise().then(response => response.json().data as Recipe[]);
-    /*new Promise((resolve, reject) => {
-    setTimeout(() => resolve(this.recipes), 100);
-  });*/
+  getAllRecipes(): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(RECIPE_SERVER + '/assets/recipes.json');
   }
 
   getRecipeById(recipe_id: number): Promise<Recipe> {
-    return this.http.get(RECIPE_SERVER + `/v1/recipes/${recipe_id}.json`).toPromise()
-      .then(response => response.json().data as Recipe).catch(this.handleError);
+    return this.http.get<Recipe>(RECIPE_SERVER + `/assets/${recipe_id}.json`).toPromise()
+      .catch(this.handleError);
   }
 
-  // First upload the recipe
-  // second, upload the images
-  // cover_photo
-  // preparation_photo
-
   addRecipe(recipe: Recipe, files: {}): Promise<Recipe> {
-
-    return this.http.put(RECIPE_SERVER + '/v1/recipes.json', recipe).toPromise()
+    return this.http.put<Recipe>(RECIPE_SERVER + '/v1/recipes.json', recipe).toPromise()
       .then((response) => {
-        const final_recipe: Recipe = response.json().data as Recipe;
+        const final_recipe: Recipe = response;
         const formData: FormData = new FormData();
 
         if (files['cover_photo']) {
@@ -53,15 +44,17 @@ export class RecipeService {
           }
         }
 
-        return this.http.post(RECIPE_SERVER + `/v1/recipes/${final_recipe.id}/images`,
-          formData).toPromise().then(image_response => final_recipe)
+        return this.http.post(RECIPE_SERVER + `/v1/recipes/${final_recipe.id}/images`, formData)
+          .toPromise()
+          .then(image_response => final_recipe)
           .catch(this.handleError);
 
-      }).catch(this.handleError);
+      })
+      .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
-    console.error('Error occured talking to server: ' + error);
+    console.error('Error occurred talking to server: ' + error);
     return Promise.reject(error.message || error);
   }
 }

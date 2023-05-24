@@ -44,15 +44,21 @@ export class RecipeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.recipeService.getAllrecipes().then((recipes) => {
+    this.recipeService.getAllRecipes().subscribe((recipes) => {
       this.recipes = recipes;
       this.recipe_loaded = true;
-    }).catch((err) => {
+    }, (err)=>{
+      this.load_error = true;
+      const body = JSON.parse(err._body);
+      this.error_text = body.message; 
+    });
+    
+    /*.catch((err) => {
       this.load_error = true;
       const body = JSON.parse(err._body);
       this.error_text = body.message;
 
-    });
+    });*/
   }
 
   public toggleFont() {

@@ -1,0 +1,24 @@
+[
+    {
+        "id": "1",
+        "title": "Upma",
+        "description": "Upma, a traditional South Indian breakfast dish, is a delightful blend of semolina, spices, and vegetables. With its unique texture and aromatic flavors, Upma has become a popular choice not only for breakfast but also as a light meal option throughout the day. Whether you're looking for a quick and wholesome breakfast or a comforting dish to satisfy your cravings, Upma offers a fulfilling experience that is both nutritious and delicious.",
+        "feeds_this_many": 2,
+        "preparation_time": 30,
+        "cover_photo": "Rava-Upma.jpg",
+        "keywords": [
+            "recipe"
+        ]
+    },
+    {
+        "id": "2",
+        "title": "Pizza",
+        "description": "Be it any occasion, we all love to eat pizza at home. But, what goes behind making this delicious dish? Well, learn all about making a delicious pizza at home with this easy recipe that will take you through detailed steps",
+        "feeds_this_many": 4,
+        "preparation_time": 30,
+        "cover_photo": "pizza.jpg",
+        "keywords": [
+            "recipe"
+        ]
+    }
+]

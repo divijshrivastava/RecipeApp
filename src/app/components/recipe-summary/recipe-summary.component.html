@@ -8,7 +8,7 @@ recipe panel panel-default":"dark_background panel panel-default"' (click)='user
   <div class="panel-body">
     <p>{{ recipe.description }}</p>
     <div class=" cover-photo-holder ">
-      <img src="{{ recipe.cover_photo? 'http://localhost:8080/images/'+ recipe.cover_photo:'../assets/empty-bowl.png'}}"
+      <img src="{{ recipe.cover_photo? '/assets/images/'+ recipe.cover_photo:'../assets/empty-bowl.png'}}"
        style="width: 150px; height: 150px; margin: 6px"
       />
     </div>
