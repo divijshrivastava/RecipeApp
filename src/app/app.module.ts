@@ -46,7 +46,7 @@ import { HttpClientModule } from '@angular/common/http';
 
     ])
   ],
-  providers: [RecipeService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

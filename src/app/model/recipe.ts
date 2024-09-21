@@ -13,7 +13,7 @@ export class Recipe {
     public keywords: string[];
 
     public static inputRecipe(): Recipe {
-        return new Recipe(1, '', '', 1, 1, null, null, null, null);
+        return new Recipe(1, '', '', 1, 1, [], [], '', []);
     }
 
     public static recipeFromJson(obj: any): Recipe {

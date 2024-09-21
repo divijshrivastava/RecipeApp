@@ -9,8 +9,7 @@ const RECIPE_SERVER = ``;
   providedIn: 'root'
 })
 export class RecipeService {
-
-  recipes: Recipe[];
+  recipes: Recipe[] = [];
   constructor(private http: HttpClient) {
 
   }
@@ -24,10 +23,11 @@ export class RecipeService {
       .catch(this.handleError);
   }
 
-  addRecipe(recipe: Recipe, files: {}): Promise<Recipe> {
-    return this.http.put<Recipe>(RECIPE_SERVER + '/v1/recipes.json', recipe).toPromise()
+  addRecipe(recipe: Recipe, files: any): Promise<Recipe> {
+    return this.http.put<Recipe>(RECIPE_SERVER + './v1/recipes.json', recipe).toPromise()
       .then((response) => {
-        const final_recipe: Recipe = response;
+        let default_recipe = Recipe.inputRecipe();
+        const final_recipe: Recipe = response || default_recipe;
         const formData: FormData = new FormData();
 
         if (files['cover_photo']) {

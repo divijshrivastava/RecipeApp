@@ -2,26 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../../model/recipe';
 import { RecipeService } from '../../services/recipe.service';
 import { Router } from '../../../../node_modules/@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
 import { AbstractControl, ValidatorFn, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { controlNameBinding } from '../../../../node_modules/@angular/forms/src/directives/reactive_directives/form_control_name';
 @Component({
   selector: 'app-edit-new-recipe',
   templateUrl: './edit-new-recipe.component.html',
-  styleUrls: ['./edit-new-recipe.component.css']
+  styleUrls: ['./edit-new-recipe.component.scss']
 })
 export class EditNewRecipeComponent implements OnInit {
 
   recipe_in_progress: Recipe;
   disabled_add_recipe_button: boolean;
-  recipeForm: FormGroup;
-  cover_photo_for_viewing = 'assets/empty-bowl.png';
-  instruction_recipe_photos: string[];
-  cover_photo_for_upload: File;
+  recipeForm: FormGroup = new FormGroup({});
+  cover_photo_for_viewing : string= 'assets/empty-bowl.png';
+  instruction_recipe_photos: string[] | any;
+  cover_photo_for_upload: File | undefined;
   instruction_photo_for_upload: File[];
 
   buildRecipeForm(): void {
-    const fg = {
+    const fg :any= {
       'title': new FormControl(this.recipe_in_progress.title, [Validators.required, noTamatar()]),
       'description': new FormControl(this.recipe_in_progress.description, [Validators.required, noGaali()]),
       'feeds_this_many': new FormControl(this.recipe_in_progress.feeds_this_many, [Validators.required, Validators.min(1),
@@ -50,19 +48,19 @@ export class EditNewRecipeComponent implements OnInit {
   }
 
   constructor(private recipeService: RecipeService, private router: Router) {
-    this.recipe_in_progress = new Recipe(1, '', '', 1, 1, [], [], null, null);
+    this.recipe_in_progress = new Recipe(1, '', '', 1, 1, [], [], "", []);
     this.disabled_add_recipe_button = true;
     this.instruction_recipe_photos = [];
-    this.cover_photo_for_upload = null;
+    this.cover_photo_for_upload ;
     this.instruction_photo_for_upload = [];
     this.buildRecipeForm();
   }
 
-  readUrl(event): void {
+  readUrl(event:any): void {
     if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
+      const reader:any = new FileReader();
 
-      reader.onload = (rdr) => {
+      reader.onload = (rdr:any) => {
         this.cover_photo_for_viewing = reader.result;
       };
 
@@ -73,7 +71,7 @@ export class EditNewRecipeComponent implements OnInit {
     }
   }
 
-  readInstUrl(i, event): void {
+  readInstUrl(i: any, event:any): void {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
 
@@ -99,7 +97,7 @@ export class EditNewRecipeComponent implements OnInit {
       this.router.navigate(['recipes', recipe.id]));
   }
 
-  validateForm(event): void {
+  validateForm(event: any): void {
 
     this.disabled_add_recipe_button = true;
     console.log(this.recipe_in_progress.title);
@@ -161,9 +159,9 @@ export class EditNewRecipeComponent implements OnInit {
 
   addNewIngredient() {
     if (!this.recipe_in_progress.ingredients) {
-      this.recipe_in_progress.ingredients = [{ ingredient: null, measure: null }];
+      this.recipe_in_progress.ingredients = [{ ingredient: "" , measure: ""}];
     } else {
-      this.recipe_in_progress.ingredients.push({ ingredient: null, measure: null });
+      this.recipe_in_progress.ingredients.push({ ingredient: "", measure: ""});
     }
 
     this.buildRecipeForm();
@@ -178,14 +176,14 @@ export class EditNewRecipeComponent implements OnInit {
 
   addNewInstructions() {
     if (!this.recipe_in_progress.instructions) {
-      this.recipe_in_progress.instructions = [{ instruction: null, photo: null }];
+      this.recipe_in_progress.instructions = [{ instruction: "", photo: ""}];
       this.instruction_recipe_photos = [];
       this.instruction_photo_for_upload = [];
       console.log('addNewInstructions a');
     } else {
-      this.recipe_in_progress.instructions.push({ instruction: null, photo: null });
+      this.recipe_in_progress.instructions.push({ instruction: "", photo: ""});
       this.instruction_recipe_photos.push('');
-      this.instruction_photo_for_upload.push(null);
+      this.instruction_photo_for_upload.push();
       console.log('addNewInstructions b instruction_recipe_photos length=' + this.instruction_recipe_photos.length);
     }
     console.log('Instruction recipe photo' + this.instruction_recipe_photos);
@@ -212,7 +210,7 @@ export function noTamatar(): ValidatorFn {
         'noTamatar': { value: control.value }
       };
     }
-    return null;
+    return {};
   };
 }
 
@@ -224,6 +222,6 @@ export function noGaali(): ValidatorFn {
         'noGaali': control.value
       };
     }
-    return null;
+    return {};
   };
 }

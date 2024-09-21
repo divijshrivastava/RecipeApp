@@ -1,0 +1,45 @@
+div.cover-photo-holder img {
+    width: 150px;
+    height: 150px;
+    margin: 5px;
+    float: right;
+  }
+  
+  .recipe {
+    background-color: rgb(198, 243, 34);
+    float: left;
+    width: 97%;
+    margin: 10px;
+    max-width: 500px;
+  }
+  
+  .dark_background {
+    float: left;
+    width: 97%;
+    margin: 10px;
+    max-width: 500px;
+    background-color: rgb(238, 241, 245);
+  }
+  
+  .data_title {
+    float:none;
+    margin: 10px;
+    font-weight: bold;
+  }
+  
+  .data_title span{
+    margin: 10px;
+    font-weight: normal;
+  }
+  
+  @media (min-width: 1024px) {
+    .recipe {
+      width: 500px;
+      margin: 10px;
+    }
+    .dark_background {
+      width: 500px;
+      margin: 10px;
+    }
+  }
+  

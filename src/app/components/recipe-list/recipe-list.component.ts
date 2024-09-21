@@ -6,18 +6,18 @@ import { RecipeService } from '../../services/recipe.service';
 @Component({
   selector: 'app-recipe-list',
   templateUrl: './recipe-list.component.html',
-  styleUrls: ['./recipe-list.component.css']
+  styleUrls: ['./recipe-list.component.scss']
 })
 export class RecipeListComponent implements OnInit {
 
-  recipes: Recipe[];
+  recipes: Recipe[] = [];
   recipe_in_progress: Recipe;
   dark_background: Boolean;
   recipe_loaded: Boolean;
   current_styles: any = { 'font-size': '150%' };
   small_font: boolean;
   load_error: boolean;
-  error_text: string;
+  error_text: string | undefined;
 
   public addRecipeClicked() {
     console.log('addRecipeClicked');

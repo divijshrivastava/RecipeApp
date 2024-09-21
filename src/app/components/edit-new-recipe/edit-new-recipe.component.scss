@@ -1,0 +1,50 @@
+div.instruction input.form-control {
+    width: 60%;
+    display: inline;
+  }
+  
+  div.instruction {
+    margin-bottom: 7px;
+  }
+  
+  .newrecipe {
+    float: left;
+    width: 550px;
+  }
+  
+  .cover-photo-holder img {
+    width: 300px;
+    height: 300px;
+    border: 0px;
+  }
+  
+  .cover-photo-holder{
+    float:right;
+    
+  }
+  
+  div.add-ingredient input,
+  div.add-instruction input {
+    width: 50px;
+  }
+  
+  @media(min-width: 850px) {
+    div.cover-photo-holder img {
+      float: right;
+    }
+  }
+  
+  .ingredient {
+    font-weight: 100%;
+  }
+  
+  input.ng-valid,
+  textarea.ng-valid {
+    border-left: 5px solid #42a948;
+  }
+  
+  input.ng-invalid,
+  textarea.ng-invalid {
+    border-left: 5px solid #a94442;
+  }
+  

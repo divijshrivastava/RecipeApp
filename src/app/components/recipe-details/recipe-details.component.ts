@@ -7,13 +7,13 @@ import { RecipeService } from '../../services/recipe.service';
 @Component({
   selector: 'app-recipe-details',
   templateUrl: './recipe-details.component.html',
-  styleUrls: ['./recipe-details.component.css']
+  styleUrls: ['./recipe-details.component.scss']
 })
 export class RecipeDetailsComponent implements OnInit {
 
-  recipe: Recipe;
+  recipe: Recipe | undefined;
   load_error: Boolean;
-  error_text: string;
+  error_text: string | undefined;
 
   constructor(private route: ActivatedRoute,
     private location: Location,
@@ -24,7 +24,8 @@ export class RecipeDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
-      const recipe_id = parseInt(params.get('recipe_id'), 10);
+      let recipe_id : any =  params.get('recipe_id');
+      recipe_id = parseInt(recipe_id, 10);
 
       this.recipeService.getRecipeById(recipe_id).then((xrecipe) => {
         this.recipe = xrecipe;

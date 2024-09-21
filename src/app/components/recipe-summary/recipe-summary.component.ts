@@ -5,15 +5,15 @@ import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-recipe-summary',
   templateUrl: './recipe-summary.component.html',
-  styleUrls: ['./recipe-summary.component.css']
+  styleUrls: ['./recipe-summary.component.scss']
 })
 
 export class RecipeSummaryComponent {
 
   @Input()
-  recipe: Recipe;
+  recipe: Recipe | undefined;
   @Input()
-  dark_back: boolean;
+  dark_back: Boolean;
 
   current_styles: any;
 
@@ -24,7 +24,7 @@ export class RecipeSummaryComponent {
   userClick: EventEmitter<number> = new EventEmitter();
 
   userClicked() {
-    this.userClick.emit(this.recipe.id);
+    this.userClick.emit(this.recipe?.id);
   }
 
    constructor() {
