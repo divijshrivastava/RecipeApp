@@ -30,9 +30,9 @@
           <div class="form-group">
             <label>Ingredients </label>
             <div class="ingredient" *ngFor="let ingredient of recipe_in_progress.ingredients, let i=index">
-              <input style="width:40%" type="text" formControlName="ingredient_{{i}}" [(ngModel)]='recipe_in_progress.ingredients[i].ingredient'
+              <input style="width:40%" type="text" formControlName="ingredient_{{i}}" [(ngModel)]='recipe_in_progress.ingredients[i].name'
                 placeholder="Ingredient">
-              <input type="text" [(ngModel)]='recipe_in_progress.ingredients[i].measure' placeholder="How much?" formControlName="ingredient_measure_{{i}}"
+              <input type="text"  placeholder="How much?" formControlName="ingredient_measure_{{i}}"
               />
               <a (click)="removeIngredient(i)" style="font-weight: 80%; margin: 10px">Remove</a>
             </div>
@@ -44,7 +44,7 @@
             <div class="instruction" 
             *ngFor="let instruction of recipe_in_progress.instructions, let i=index">
               <input style="width:40%" type="text" 
-              [(ngModel)]="recipe_in_progress.instructions[i].instruction" 
+              [(ngModel)]="recipe_in_progress.instructions[i].action" 
               formControlName="instruction_{{i}}"
                 placeholder="Instruction" />
               <input type="file"  

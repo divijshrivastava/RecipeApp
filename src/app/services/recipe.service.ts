@@ -1,30 +1,55 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Recipe } from '../model/recipe';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AppwriteService } from './appwrite.service';
+import { environment } from '../../environments/environment';
 
 const RECIPE_SERVER = ``;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RecipeService {
   recipes: Recipe[] = [];
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private appWriteService: AppwriteService
+  ) {}
 
+  getAllRecipes(): Recipe[] {
+    let recipes: Recipe[] = [];
+    this.appWriteService.databases
+      .listDocuments(
+        environment.appwriteDatabaseId, //environment.appwriteDatabaseId,
+        environment.appwriteRecipeCollectionId
+      )
+      .then((resp) => {
+        console.log(resp.documents);
+
+        resp.documents.forEach((document) =>
+          recipes.push(Recipe.recipeFromDocument(document))
+        );
+      });
+
+    return recipes;
   }
 
-  getAllRecipes(): Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(RECIPE_SERVER + '/assets/recipes.json');
-  }
+  getRecipeById(recipe_id: string, recipe:WritableSignal<Recipe>): WritableSignal<Recipe> {
+    this.appWriteService.databases
+      .getDocument('1', '1', recipe_id)
+      .then((document) => {
+        recipe.set(Recipe.recipeFromDocument(document));
+        console.log(recipe());
+      });
 
-  getRecipeById(recipe_id: number): Promise<Recipe> {
-    return this.http.get<Recipe>(RECIPE_SERVER + `/assets/${recipe_id}.json`).toPromise()
-      .catch(this.handleError);
+    return recipe;
   }
 
   addRecipe(recipe: Recipe, files: any): Promise<Recipe> {
-    return this.http.put<Recipe>(RECIPE_SERVER + './v1/recipes.json', recipe).toPromise()
+    return this.http
+      .put<Recipe>(RECIPE_SERVER + './v1/recipes.json', recipe)
+      .toPromise()
       .then((response) => {
         let default_recipe = Recipe.inputRecipe();
         const final_recipe: Recipe = response || default_recipe;
@@ -44,11 +69,14 @@ export class RecipeService {
           }
         }
 
-        return this.http.post(RECIPE_SERVER + `/v1/recipes/${final_recipe.id}/images`, formData)
+        return this.http
+          .post(
+            RECIPE_SERVER + `/v1/recipes/${final_recipe.id}/images`,
+            formData
+          )
           .toPromise()
-          .then(image_response => final_recipe)
+          .then((image_response) => final_recipe)
           .catch(this.handleError);
-
       })
       .catch(this.handleError);
   }

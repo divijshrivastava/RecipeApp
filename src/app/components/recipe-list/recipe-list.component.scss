@@ -14,3 +14,63 @@ div.newrecipe{
 .dk{
     font-size: 80%;
 }
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    row-gap: 20px;
+
+    & > * {
+        flex-basis: calc(50% - 10px); /* Adjusting for gap */
+    }
+
+    & > *:nth-child(2n) {
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 140%;
+    }
+
+    .dark_bg {
+        font-size: 130%;
+    }
+
+    div.newrecipe {
+        max-width: 100%;
+    }
+
+    .dk {
+        font-size: 70%;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        column-gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 120%;
+    }
+
+    .dark_bg {
+        font-size: 110%;
+    }
+
+    div.newrecipe {
+        max-width: 100%;
+    }
+
+    .dk {
+        font-size: 60%;
+    }
+
+    .container {
+        gap: 30px;
+    }
+}

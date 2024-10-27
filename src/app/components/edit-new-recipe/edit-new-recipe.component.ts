@@ -29,16 +29,16 @@ export class EditNewRecipeComponent implements OnInit {
     };
     for (let i = 0; i < this.recipe_in_progress.ingredients.length; i++) {
       fg['ingredient_' + i] =
-        new FormControl(this.recipe_in_progress.ingredients[i].ingredient,
+        new FormControl(this.recipe_in_progress.ingredients[i].name,
           [Validators.required]);
       fg['ingredient_measure_' + i] = new FormControl(
-        this.recipe_in_progress.ingredients[i].measure,
+        this.recipe_in_progress.ingredients[i].quantity,
         [Validators.required]);
     }
 
     for (let i = 0; i < this.recipe_in_progress.instructions.length; i++) {
       fg['instruction_' + i] =
-        new FormControl(this.recipe_in_progress.instructions[i].instruction,
+        new FormControl(this.recipe_in_progress.instructions[i].action,
           [Validators.required]);
       fg['instruction_photo_' + i] = new FormControl(this.recipe_in_progress.instructions[i].photo);
       //          new FormControl(this.recipe_in_progress.instructions[i].photo,
@@ -48,7 +48,7 @@ export class EditNewRecipeComponent implements OnInit {
   }
 
   constructor(private recipeService: RecipeService, private router: Router) {
-    this.recipe_in_progress = new Recipe(1, '', '', 1, 1, [], [], "", []);
+    this.recipe_in_progress = new Recipe('', '', '', 1, 1, [], [], "", []);
     this.disabled_add_recipe_button = true;
     this.instruction_recipe_photos = [];
     this.cover_photo_for_upload ;
@@ -132,12 +132,12 @@ export class EditNewRecipeComponent implements OnInit {
     if (this.recipe_in_progress.ingredients &&
       this.recipe_in_progress.ingredients.length > 0) {
       for (const ingr of this.recipe_in_progress.ingredients) {
-        if (!ingr.measure || ingr.measure.length < 1 || parseInt(ingr.measure, 10) < 1) {
+        if (!ingr.quantity|| ingr.unit.length < 1) {
           console.log('Returning due to ingredient measure');
           return;
         }
 
-        if (!ingr.ingredient || ingr.ingredient.length < 1) {
+        if (!ingr.name|| ingr.name.length < 1) {
           console.log('Returning due to ingredient length');
           return;
         }
@@ -147,7 +147,7 @@ export class EditNewRecipeComponent implements OnInit {
     if (this.recipe_in_progress.instructions &&
       this.recipe_in_progress.instructions.length > 0) {
       for (const inst of this.recipe_in_progress.instructions) {
-        if (!inst.instruction || inst.instruction.length < 1) {
+        if (!inst.action|| inst.action.length < 1) {
           console.log('Returning due to instruction length');
           return;
         }
@@ -159,9 +159,9 @@ export class EditNewRecipeComponent implements OnInit {
 
   addNewIngredient() {
     if (!this.recipe_in_progress.ingredients) {
-      this.recipe_in_progress.ingredients = [{ ingredient: "" , measure: ""}];
+      this.recipe_in_progress.ingredients = [{ name: "" , quantity: 0, unit:""}];
     } else {
-      this.recipe_in_progress.ingredients.push({ ingredient: "", measure: ""});
+      this.recipe_in_progress.ingredients.push({ name: "", quantity: 0, unit:''});
     }
 
     this.buildRecipeForm();
@@ -176,12 +176,12 @@ export class EditNewRecipeComponent implements OnInit {
 
   addNewInstructions() {
     if (!this.recipe_in_progress.instructions) {
-      this.recipe_in_progress.instructions = [{ instruction: "", photo: ""}];
+      this.recipe_in_progress.instructions = [{ action: "", photo: ""}];
       this.instruction_recipe_photos = [];
       this.instruction_photo_for_upload = [];
       console.log('addNewInstructions a');
     } else {
-      this.recipe_in_progress.instructions.push({ instruction: "", photo: ""});
+      this.recipe_in_progress.instructions.push({ action: "", photo: ""});
       this.instruction_recipe_photos.push('');
       this.instruction_photo_for_upload.push();
       console.log('addNewInstructions b instruction_recipe_photos length=' + this.instruction_recipe_photos.length);

@@ -10,37 +10,37 @@
     </div>
   </div>
   
-  <div *ngIf="recipe && !load_error" class='recipe panel panel-default'>
+  <div *ngIf="recipe() && !load_error" class='recipe panel panel-default'>
   
     <div class="panel-heading">
-      <h3 class="panel-title">{{ recipe.title }}</h3>
+      <h3 class="panel-title">{{ recipe().title }}</h3>
     </div>
     <div class="panel-body">
-      <p>{{ recipe.description }}</p>
+      <p>{{ recipe().description }}</p>
       <div class="cover-photo-holder">
-        <img src="{{ recipe.cover_photo? 'http://localhost:4200/assets/images/'+recipe.cover_photo:'../assets/empty-bowl.png'}}" style="width: 150px; height: 150px; margin: 6px"
+        <img src="{{ recipe().cover_photo? recipe().cover_photo:'../assets/empty-bowl.png'}}" style="width: 150px; height: 150px; margin: 6px"
         />
       </div>
       <div class="data_title">Preparation Time:
-        <span class="data_variable">{{recipe.preparation_time}} minutes</span>
+        <span class="data_variable">{{recipe().preparation_time}} minutes</span>
       </div>
       <div class="data_title">Feeds this many people:
-        <span>{{recipe.feeds_this_many}}</span>
+        <span>{{recipe().feeds_this_many}}</span>
       </div>
   
       <div class="ingredients">
         <div class="data_title">Ingredients</div>
         <ol>
-          <li *ngFor="let ingredient of recipe.ingredients">{{ ingredient.ingredient}}</li>
+          <li *ngFor="let ingredient of recipe().ingredients">{{ ingredient.name}}</li>
         </ol>
       </div>
   
       <div class="instructions">
         <div class="data_title">Instructions</div>
         <ol>
-          <li *ngFor="let instruction of recipe.instructions">
-            {{ instruction.instruction}}
-            <img src="/assets/images/{{instruction.photo}}" border="0" style="width:150px; height: 150px;
+          <li *ngFor="let instruction of recipe().instructions">
+            {{ instruction.action}}
+            <img src="/assets/images/{{instruction.photo}}" style="width:150px; height: 150px;
             object-fit: cover" *ngIf="instruction.photo"/>
           </li>
         </ol>

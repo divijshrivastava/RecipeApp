@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../../model/recipe';
-import { Router } from '../../../../node_modules/@angular/router';
 import { RecipeService } from '../../services/recipe.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-list',
   templateUrl: './recipe-list.component.html',
-  styleUrls: ['./recipe-list.component.scss']
+  styleUrls: ['./recipe-list.component.scss'],
 })
 export class RecipeListComponent implements OnInit {
-
   recipes: Recipe[] = [];
   recipe_in_progress: Recipe;
   dark_background: Boolean;
@@ -34,8 +33,7 @@ export class RecipeListComponent implements OnInit {
     console.log(JSON.stringify(recipe, null, 2));
   }
 
-  constructor(private router: Router, private recipeService: RecipeService,
-  ) {
+  constructor(private router: Router, private recipeService: RecipeService) {
     this.recipe_in_progress = Recipe.inputRecipe();
     this.dark_background = false;
     this.small_font = false;
@@ -44,44 +42,31 @@ export class RecipeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.recipeService.getAllRecipes().subscribe((recipes) => {
-      this.recipes = recipes;
+    this.recipes = this.recipeService.getAllRecipes();
+    if (this.recipes) {
+      this.load_error = false;
       this.recipe_loaded = true;
-    }, (err)=>{
-      this.load_error = true;
-      const body = JSON.parse(err._body);
-      this.error_text = body.message; 
-    });
-    
-    /*.catch((err) => {
-      this.load_error = true;
-      const body = JSON.parse(err._body);
-      this.error_text = body.message;
-
-    });*/
+    }
   }
 
   public toggleFont() {
-
     if (this.current_styles['font-size'] === '150%') {
       this.current_styles['font-size'] = '175%';
     } else {
       this.current_styles['font-size'] = '150%';
     }
-    console.log(this.small_font);
     this.small_font = !this.small_font;
   }
 
   public toggleBackground() {
     this.dark_background = !this.dark_background;
   }
-  public userSelectedRecipe(recipe_id: number) {
+  public userSelectedRecipe(recipe_id: string) {
     console.log('inside recipe-list: ' + recipe_id);
-    this.router.navigateByUrl('recipes/' + recipe_id);
+    this.router.navigate(['recipes/' + recipe_id]);
   }
 
   public addNewRecipe(): void {
     this.router.navigateByUrl('newRecipe');
   }
-
 }
