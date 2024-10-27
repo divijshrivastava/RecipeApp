@@ -21,7 +21,7 @@ export class RecipeSummaryComponent {
   zoomIn: EventEmitter<Recipe> = new EventEmitter();
 
   @Output()
-  userClick: EventEmitter<number> = new EventEmitter();
+  userClick: EventEmitter<string> = new EventEmitter();
 
   userClicked() {
     this.userClick.emit(this.recipe?.id);

@@ -1,9 +1,11 @@
-<div class="topnav" id="myTopNav">
-  <a [routerLink]="['/']">
-    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-  </a>
-  <a style="float:right" [routerLink]="['newRecipe']">New Recipe</a>
-</div>
-<div style="margin: 10px">
-  <router-outlet></router-outlet>
+<div class="container">
+  <nav class="topnav" id="myTopNav">
+    <a [routerLink]="['/']">
+      <span class="glyphicon glyphicon-home" aria-hidden="true">Home</span>
+    </a>
+    <a style="float:right" [routerLink]="['newRecipe']">New Recipe</a>
+  </nav>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
 </div>

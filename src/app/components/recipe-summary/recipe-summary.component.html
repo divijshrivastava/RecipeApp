@@ -1,3 +1,4 @@
+<div class="container">
 <div [ngStyle]='current_styles' [ngClass]='dark_back?"
 recipe panel panel-default":"dark_background panel panel-default"' (click)='userClicked()'>
 
@@ -8,7 +9,7 @@ recipe panel panel-default":"dark_background panel panel-default"' (click)='user
   <div class="panel-body">
     <p>{{ recipe?.description }}</p>
     <div class=" cover-photo-holder ">
-      <img src="{{ recipe?.cover_photo? '/assets/images/'+ recipe?.cover_photo:'../assets/empty-bowl.png'}}"
+      <img src="{{ recipe?.cover_photo? recipe?.cover_photo:'../assets/empty-bowl.png'}}"
        style="width: 150px; height: 150px; margin: 6px"
       />
     </div>
@@ -20,4 +21,5 @@ recipe panel panel-default":"dark_background panel panel-default"' (click)='user
     </div>
   </div>
 
+</div>
 </div>

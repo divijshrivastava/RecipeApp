@@ -3,9 +3,18 @@
     width: 700px;
 }
 
-.topnav{
+nav{
     background-color: #983C29;
-    overflow: hidden;
+    width: 100%; // Added to cover the entire width
+    a{
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
 }
 
 .cover_photo_holder{
@@ -13,15 +22,15 @@
     width: 400px;
 }
 
-.topnav a{
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-}
+// .topnav a{
+//     float: left;
+//     display: block;
+//     color: white;
+//     text-align: center;
+//     padding: 14px 16px;
+//     text-decoration: none;
+//     font-size: 17px;
+// }
 
 .topnav a:hover{
     background-color: white;
@@ -39,4 +48,13 @@ div.input-group{
 
 div textarea{
     width:600px;
+}
+
+.container{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: flex-start;
 }

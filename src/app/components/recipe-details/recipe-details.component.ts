@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Recipe } from '../../model/recipe';
-import { ActivatedRoute, ParamMap } from '../../../../node_modules/@angular/router';
-import { Location } from '../../../../node_modules/@angular/common';
+import { Location } from '@angular/common';
 import { RecipeService } from '../../services/recipe.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-details',
@@ -11,7 +11,7 @@ import { RecipeService } from '../../services/recipe.service';
 })
 export class RecipeDetailsComponent implements OnInit {
 
-  recipe: Recipe | undefined;
+  recipe = signal<Recipe>(new Recipe('', '', '', -1, -1, [], [], '', []));
   load_error: Boolean;
   error_text: string | undefined;
 
@@ -25,16 +25,14 @@ export class RecipeDetailsComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
       let recipe_id : any =  params.get('recipe_id');
-      recipe_id = parseInt(recipe_id, 10);
 
-      this.recipeService.getRecipeById(recipe_id).then((xrecipe) => {
-        this.recipe = xrecipe;
-      }).catch((error) => {
+      this.recipe = this.recipeService.getRecipeById(recipe_id, this.recipe);
+        if(!this.recipe()){
         this.load_error = true;
-        const body = JSON.parse(error._body);
-        this.error_text = body.message;
+        }else{
+          console.log(this.recipe())
+        }
 
-      });
 
     });
   }

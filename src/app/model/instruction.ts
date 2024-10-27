@@ -1,4 +1,4 @@
 export interface Instruction {
-    instruction: string;
+    action: string;
     photo: string;
 }

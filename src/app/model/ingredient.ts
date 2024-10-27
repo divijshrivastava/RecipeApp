@@ -1,4 +1,5 @@
 export interface Ingredient {
-ingredient: string;
-measure: string;
+name: string;
+quantity: number;
+unit: string;
 }
