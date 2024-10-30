@@ -35,9 +35,16 @@ export class RecipeService {
     return recipes;
   }
 
-  getRecipeById(recipe_id: string, recipe:WritableSignal<Recipe>): WritableSignal<Recipe> {
+  getRecipeById(
+    recipe_id: string,
+    recipe: WritableSignal<Recipe>
+  ): WritableSignal<Recipe> {
     this.appWriteService.databases
-      .getDocument('1', '1', recipe_id)
+      .getDocument(
+        environment.appwriteDatabaseId,
+        environment.appwriteRecipeCollectionId,
+        recipe_id
+      )
       .then((document) => {
         recipe.set(Recipe.recipeFromDocument(document));
         console.log(recipe());
