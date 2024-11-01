@@ -84,6 +84,7 @@ export class EditNewRecipeComponent implements OnInit {
       //      setTimeout(() => console.log('instruction photo' + this.instruction_recipe_photos[i]));
     }
   }
+  
   ngOnInit() {
   }
 
