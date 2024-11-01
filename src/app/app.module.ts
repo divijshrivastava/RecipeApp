@@ -8,6 +8,8 @@ import { RecipeSummaryComponent } from './components/recipe-summary/recipe-summa
 import { RecipeDetailsComponent } from './components/recipe-details/recipe-details.component';
 import { EditNewRecipeComponent } from './components/edit-new-recipe/edit-new-recipe.component';
 import { HttpClientModule } from '@angular/common/http';
+import { routes } from './app.routes';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -16,34 +18,15 @@ import { HttpClientModule } from '@angular/common/http';
     RecipeSummaryComponent,
     RecipeListComponent,
     RecipeDetailsComponent,
-    EditNewRecipeComponent
+    EditNewRecipeComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
      ReactiveFormsModule,
-    RouterModule.forRoot([
-      {
-        path: 'recipes',
-        component: RecipeListComponent
-      },
-      {
-        path: 'recipes/:recipe_id',
-        component: RecipeDetailsComponent
-      }
-      ,
-      {
-        path: '', // used for redirection, when user doesn't enter any path.
-        redirectTo: 'recipes',
-        pathMatch: 'full'
-      },
-      {
-        path: 'newRecipe',
-        component: EditNewRecipeComponent
-      }
-
-    ])
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
