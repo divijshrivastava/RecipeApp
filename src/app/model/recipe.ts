@@ -16,6 +16,9 @@ export class Recipe {
   public difficulty?: 'Easy' | 'Medium' | 'Hard';
   public created_at?: string;
   public updated_at?: string;
+  public author_id?: string;
+  public author_name?: string;
+  public permissions?: string[];
 
   public static inputRecipe(): Recipe {
     return new Recipe('', '', '', 1, 1, [], [], '', [], 'Uncategorized', 'Medium');
@@ -47,6 +50,9 @@ export class Recipe {
     const keywords = document['keywords'] || [];
     const category = document['category'] || 'Uncategorized';
     const difficulty = document['difficulty'] || 'Medium';
+    const author_id = document['author_id'] || undefined;
+    const author_name = document['author_name'] || undefined;
+    const permissions = (document as any).$permissions || undefined;
     return new Recipe(
       id,
       title,
@@ -58,7 +64,10 @@ export class Recipe {
       cover_photo,
       keywords,
       category,
-      difficulty
+      difficulty,
+      author_id,
+      author_name,
+      permissions
     );
   }
 
@@ -73,7 +82,10 @@ export class Recipe {
     cover_photo: string,
     keywords: string[],
     category: string = 'Uncategorized',
-    difficulty: 'Easy' | 'Medium' | 'Hard' = 'Medium'
+    difficulty: 'Easy' | 'Medium' | 'Hard' = 'Medium',
+    author_id?: string,
+    author_name?: string,
+    permissions?: string[]
   ) {
     this.id = id;
     this.title = title;
@@ -86,5 +98,8 @@ export class Recipe {
     this.keywords = keywords;
     this.category = category;
     this.difficulty = difficulty;
+    this.author_id = author_id;
+    this.author_name = author_name;
+    this.permissions = permissions;
   }
 }

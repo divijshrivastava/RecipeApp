@@ -138,7 +138,7 @@
 
     <div class="recipe-actions" *ngIf="recipe()?.id">
       <button class="btn btn-primary" (click)="goBack()">← Back</button>
-      <button class="btn btn-danger" (click)="deleteRecipe()">Delete Recipe</button>
+      <button class="btn btn-danger" (click)="deleteRecipe()" *ngIf="canDelete()">Delete Recipe</button>
     </div>
   </div>
 </div>

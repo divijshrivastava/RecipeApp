@@ -89,9 +89,25 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  canDelete(): boolean {
+    const user = this.auth.user();
+    const recipe = this.recipe();
+    if (!user || !recipe?.id) return false;
+
+    // Prefer explicit author id if present.
+    if (recipe.author_id) return recipe.author_id === user.$id;
+
+    // Fall back to Appwrite document permissions if available.
+    const perms = recipe.permissions || [];
+    const expected = `delete(\"user:${user.$id}\")`;
+    const expectedAlt = `delete("user:${user.$id}")`;
+    return perms.includes(expected) || perms.includes(expectedAlt);
+  }
+
   deleteRecipe(): void {
     const recipe = this.recipe();
     if (!recipe || !recipe.id) return;
+    if (!this.canDelete()) return;
 
     if (confirm(`Are you sure you want to delete "${recipe.title}"?`)) {
       this.recipeService.deleteRecipe(recipe.id)
