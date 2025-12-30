@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Account, Client } from 'appwrite';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -15,13 +15,15 @@ export class LoginComponent {
   errorMessage: string = '';
   isLoading: boolean = false;
   private account: Account;
+  private returnUrl: string | null = null;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     const client = new Client()
       .setEndpoint(environment.appwriteEndpoint)
       .setProject(environment.appwriteProjectId);
     
     this.account = new Account(client);
+    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
   }
 
   async login(event: Event) {
@@ -37,7 +39,7 @@ export class LoginComponent {
 
     try {
       await this.account.createEmailPasswordSession(this.email, this.password);
-      this.router.navigate(['/newRecipe']);
+      this.router.navigateByUrl(this.returnUrl || '/newRecipe');
     } catch (error: any) {
       this.isLoading = false;
       if (error.code === 401) {

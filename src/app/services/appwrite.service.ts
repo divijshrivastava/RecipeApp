@@ -14,7 +14,6 @@ export class AppwriteService {
      this.client = new Client()
       .setEndpoint(environment.appwriteEndpoint)//environment.appwriteEndpoint) 'http://localhost/v1'
       .setProject(environment.appwriteProjectId);//environment.appwriteProjectId);
-      debugger;
     this.account = new Account(this.client);
     this.databases = new Databases(this.client);
    }

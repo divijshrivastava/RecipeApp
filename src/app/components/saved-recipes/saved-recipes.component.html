@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="saved-header">
+    <div>
+      <h2 class="saved-title">Saved Recipes</h2>
+      <p class="saved-subtitle">Your personal shortlist for later.</p>
+    </div>
+
+    <div class="saved-actions">
+      <button class="btn btn-secondary" type="button" (click)="goToRecipes()">
+        Browse recipes
+      </button>
+      <button
+        class="btn btn-link"
+        type="button"
+        (click)="favorites.clear(); computeSaved()"
+        [disabled]="favorites.savedIds().length === 0"
+      >
+        Clear saved
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="load_error" class="error-state">
+    <div class="error-icon">!</div>
+    <h3>Error Loading Saved Recipes</h3>
+    <p>{{ error_text }}</p>
+    <button class="btn btn-primary" (click)="load()" style="margin-top: 16px;">
+      Try Again
+    </button>
+  </div>
+
+  <div *ngIf="loading && !load_error" class="loading">
+    <div class="loading-spinner"></div>
+    <div>Loading saved recipes...</div>
+  </div>
+
+  <div *ngIf="!loading && !load_error && savedRecipes.length === 0" class="empty-state">
+    <h2 style="margin-bottom: 8px;">No saved recipes yet</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 24px;">
+      Save recipes you want to cook later and they’ll show up here.
+    </p>
+    <button class="btn btn-primary" type="button" (click)="goToRecipes()">
+      Browse recipes
+    </button>
+  </div>
+
+  <div *ngIf="!loading && !load_error && savedRecipes.length > 0" class="recipes-grid">
+    <app-recipe-summary
+      *ngFor="let recipe of savedRecipes"
+      [dark_back]="false"
+      [recipe]="recipe"
+    ></app-recipe-summary>
+  </div>
+</div>
+
+

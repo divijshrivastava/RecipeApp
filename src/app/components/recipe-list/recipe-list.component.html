@@ -69,8 +69,7 @@
     <app-recipe-summary 
       *ngFor="let recipe of filteredRecipes" 
       [dark_back]="dark_background" 
-      [recipe]="recipe"
-      (userClick)="userSelectedRecipe($event)">
+      [recipe]="recipe">
     </app-recipe-summary>
   </div>
 </div>

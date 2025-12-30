@@ -4,6 +4,9 @@ import { Location } from '@angular/common';
 import { RecipeService } from '../../services/recipe.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { FavoritesService } from '../../services/favorites.service';
+import { RatingsService, RatingSummary } from '../../services/ratings.service';
 
 @Component({
   selector: 'app-recipe-details',
@@ -15,14 +18,23 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
   load_error: Boolean = false;
   error_text: string | undefined;
   loading: Boolean = false;
+  ratingSummary: RatingSummary = { avg: 0, count: 0 };
+  myRating: number | null = null;
+  ratingError: string | null = null;
+  ratingsConfigured: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private recipeService: RecipeService,
-    private router: Router
-  ) {}
+    private router: Router,
+    public favorites: FavoritesService,
+    public auth: AuthService,
+    private ratings: RatingsService
+  ) {
+    this.ratingsConfigured = this.ratings.isConfigured();
+  }
 
   ngOnInit() {
     this.route.paramMap
@@ -47,6 +59,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.load_error = false;
     this.error_text = undefined;
+    this.ratingError = null;
 
     this.recipeService.getRecipeById(recipeId)
       .pipe(takeUntil(this.destroy$))
@@ -55,6 +68,14 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
           this.recipe.set(recipe);
           this.loading = false;
           this.load_error = false;
+
+          // Community info (best-effort)
+          this.ratings.getSummary(recipeId).pipe(takeUntil(this.destroy$)).subscribe((s) => {
+            this.ratingSummary = s;
+          });
+          this.ratings.getMyRating(recipeId).pipe(takeUntil(this.destroy$)).subscribe((r) => {
+            this.myRating = r;
+          });
         },
         error: (error) => {
           this.load_error = true;
@@ -84,5 +105,34 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  setRating(value: number): void {
+    const recipe = this.recipe();
+    if (!recipe?.id) return;
+
+    this.ratingError = null;
+
+    if (!this.auth.isLoggedIn()) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
+
+    this.ratings
+      .setMyRating(recipe.id, value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.myRating = value;
+          this.ratings.getSummary(recipe.id).pipe(takeUntil(this.destroy$)).subscribe((s) => {
+            this.ratingSummary = s;
+          });
+        },
+        error: (err) => {
+          this.ratingError =
+            err?.message ||
+            'Could not save rating. Make sure ratings collection is configured in Appwrite.';
+        },
+      });
   }
 }

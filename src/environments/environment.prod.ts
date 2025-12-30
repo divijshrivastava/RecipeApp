@@ -5,4 +5,7 @@ export const environment = {
   appwriteDatabaseId: '671aae9d0028245666c1',
   appwriteRecipeCollectionId: '671d4443001c5acce9c1',
   appwriteStorageBucketId: 'default',
+  // Optional: community collections (configure in Appwrite to enable)
+  appwriteFavoritesCollectionId: '',
+  appwriteRatingsCollectionId: '',
 };

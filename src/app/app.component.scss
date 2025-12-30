@@ -16,8 +16,16 @@ nav.topnav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
+  gap: 16px;
+  padding: 0 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+nav.topnav .topnav-left,
+nav.topnav .topnav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 nav.topnav a {
@@ -53,7 +61,6 @@ nav.topnav a span.glyphicon {
 }
 
 nav.topnav a.new-recipe-link {
-  margin-left: auto;
   background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -64,6 +71,32 @@ nav.topnav a.new-recipe-link:hover {
 nav.topnav a.active {
   background-color: rgba(255, 255, 255, 0.15);
   font-weight: 600;
+}
+
+nav.topnav .nav-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  background: transparent;
+  border: none;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  margin: 6px 0;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+nav.topnav .nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav.topnav a:focus-visible,
+nav.topnav .nav-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 2px;
 }
 
 /* Main Content Area */
@@ -80,13 +113,16 @@ nav.topnav a.active {
     padding: 12px;
   }
   
-  nav.topnav a {
+  nav.topnav .topnav-left,
+  nav.topnav .topnav-right {
     width: 100%;
     justify-content: center;
+    flex-wrap: wrap;
   }
   
-  nav.topnav a[style*="float:right"] {
-    margin-left: 0;
+  nav.topnav a,
+  nav.topnav .nav-button {
+    justify-content: center;
   }
   
   .container > div {

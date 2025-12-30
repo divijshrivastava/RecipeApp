@@ -10,6 +10,7 @@ import { EditNewRecipeComponent } from './components/edit-new-recipe/edit-new-re
 import { HttpClientModule } from '@angular/common/http';
 import { routes } from './app.routes';
 import { LoginComponent } from './login/login.component';
+import { SavedRecipesComponent } from './components/saved-recipes/saved-recipes.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { LoginComponent } from './login/login.component';
     RecipeDetailsComponent,
     EditNewRecipeComponent,
     LoginComponent,
+    SavedRecipesComponent,
   ],
   imports: [
     BrowserModule,

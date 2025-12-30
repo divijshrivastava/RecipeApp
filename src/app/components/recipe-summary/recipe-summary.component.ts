@@ -1,6 +1,7 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Recipe } from '../../model/recipe';
-import { EventEmitter } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { FavoritesService } from '../../services/favorites.service';
 
 @Component({
   selector: 'app-recipe-summary',
@@ -17,17 +18,15 @@ export class RecipeSummaryComponent {
 
   current_styles: any;
 
-  @Output()
-  zoomIn: EventEmitter<Recipe> = new EventEmitter();
-
-  @Output()
-  userClick: EventEmitter<string> = new EventEmitter();
-
-  userClicked() {
-    this.userClick.emit(this.recipe?.id);
+  toggleSaved(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.recipe?.id) {
+      this.favorites.toggle(this.recipe.id);
+    }
   }
 
-   constructor() {
+   constructor(public favorites: FavoritesService, public auth: AuthService) {
     this.dark_back = false;
     this.current_styles = { 'font-size': '100%' };
   }

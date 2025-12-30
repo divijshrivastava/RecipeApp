@@ -1,8 +1,11 @@
 <div class="container">
-  <div 
-    [ngStyle]='current_styles' 
-    [ngClass]='dark_back ? "recipe panel panel-default" : "dark_background panel panel-default"' 
-    (click)='userClicked()'>
+  <a
+    [ngStyle]="current_styles"
+    class="recipe-card"
+    [ngClass]="dark_back ? 'recipe panel panel-default' : 'dark_background panel panel-default'"
+    [routerLink]="['/recipes', recipe?.id]"
+    [attr.aria-label]="recipe?.title ? 'View recipe: ' + recipe?.title : 'View recipe'"
+  >
     
     <div class="panel-heading">
       <div class="recipe-header">
@@ -18,6 +21,17 @@
             {{ recipe?.difficulty || 'Medium' }}
           </span>
         </div>
+
+        <button
+          *ngIf="auth.isLoggedIn()"
+          type="button"
+          class="save-button"
+          (click)="toggleSaved($event)"
+          [attr.aria-pressed]="favorites.isSaved(recipe?.id)"
+          [attr.aria-label]="favorites.isSaved(recipe?.id) ? 'Unsave recipe' : 'Save recipe'"
+        >
+          {{ favorites.isSaved(recipe?.id) ? 'Saved' : 'Save' }}
+        </button>
       </div>
     </div>
     
@@ -26,8 +40,9 @@
       
       <div class="cover-photo-holder">
         <img 
-          [src]="recipe?.cover_photo || '../assets/empty-bowl.png'"
+          [src]="recipe?.cover_photo || '/assets/empty-bowl.png'"
           [alt]="recipe?.title + ' cover photo'"
+          loading="lazy"
         />
       </div>
       
@@ -41,5 +56,5 @@
         <span>{{recipe?.feeds_this_many}} {{recipe?.feeds_this_many === 1 ? 'person' : 'people'}}</span>
       </div>
     </div>
-  </div>
+  </a>
 </div>

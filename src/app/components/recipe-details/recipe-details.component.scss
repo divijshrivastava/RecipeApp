@@ -13,6 +13,17 @@
   padding: 32px;
 }
 
+.save-detail-button {
+  margin-left: auto;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.save-detail-button:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.18);
+  transform: none;
+}
+
 .panel-heading h3 {
   margin: 0;
   font-weight: 700;
@@ -22,6 +33,101 @@
 
 .panel-body {
   padding: 32px;
+}
+
+.recipe-hero {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 24px;
+  align-items: start;
+  margin: 8px 0 24px;
+}
+
+.hero-media {
+  width: 100%;
+}
+
+.hero-image {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--border-color);
+}
+
+.hero-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 16px;
+  background: var(--background);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.meta-chip {
+  padding: 12px 14px;
+  background: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.meta-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.meta-value {
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.meta-sub {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.stars {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.star {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--surface);
+  color: #94a3b8;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.star:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+  color: #f59e0b;
+}
+
+.star.active {
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+.star:focus-visible {
+  outline: 3px solid rgba(245, 158, 11, 0.25);
+  outline-offset: 2px;
 }
 
 .panel-body > p {
@@ -166,6 +272,14 @@
 
   .panel-body {
     padding: 20px;
+  }
+
+  .recipe-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-image {
+    height: 260px;
   }
 
   .recipe-meta {

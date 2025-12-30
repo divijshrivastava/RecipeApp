@@ -26,29 +26,86 @@
           {{ recipe()?.difficulty || 'Medium' }}
         </span>
       </div>
+
+      <button
+        type="button"
+        class="btn btn-secondary save-detail-button"
+        (click)="recipe()?.id && favorites.toggle(recipe()!.id)"
+        *ngIf="auth.isLoggedIn()"
+      >
+        {{ favorites.isSaved(recipe()?.id) ? 'Saved' : 'Save' }}
+      </button>
     </div>
   </div>
   
   <div class="panel-body">
+    <div class="recipe-hero">
+      <div class="hero-media">
+        <img
+          class="hero-image"
+          [src]="recipe()?.cover_photo || '/assets/empty-bowl.png'"
+          [alt]="recipe()?.title + ' cover photo'"
+        />
+      </div>
+
+      <div class="hero-meta">
+        <div class="meta-chip rating-chip">
+          <div class="meta-label">Rating</div>
+          <div class="meta-value">
+            <span *ngIf="!ratingsConfigured">Ratings not enabled</span>
+            <span *ngIf="ratingsConfigured && ratingSummary.count > 0">{{ ratingSummary.avg | number:'1.1-1' }} / 5</span>
+            <span *ngIf="ratingsConfigured && ratingSummary.count === 0">No ratings yet</span>
+          </div>
+          <div class="meta-sub" *ngIf="ratingsConfigured && ratingSummary.count > 0">
+            {{ ratingSummary.count }} {{ ratingSummary.count === 1 ? 'rating' : 'ratings' }}
+          </div>
+          <div class="meta-sub" *ngIf="!ratingsConfigured">
+            Configure `appwriteRatingsCollectionId` to enable community ratings.
+          </div>
+        </div>
+
+        <div class="meta-chip">
+          <div class="meta-label">Prep time</div>
+          <div class="meta-value">{{ recipe()?.preparation_time }} min</div>
+        </div>
+        <div class="meta-chip">
+          <div class="meta-label">Servings</div>
+          <div class="meta-value">
+            {{recipe()?.feeds_this_many}} {{recipe()?.feeds_this_many === 1 ? 'person' : 'people'}}
+          </div>
+        </div>
+        <div class="meta-chip" *ngIf="recipe()?.category">
+          <div class="meta-label">Category</div>
+          <div class="meta-value">{{ recipe()?.category }}</div>
+        </div>
+        <div class="meta-chip" *ngIf="recipe()?.difficulty">
+          <div class="meta-label">Difficulty</div>
+          <div class="meta-value">{{ recipe()?.difficulty }}</div>
+        </div>
+
+        <div class="meta-chip rate-chip" *ngIf="ratingsConfigured && auth.isLoggedIn()">
+          <div class="meta-label">Your rating</div>
+          <div class="stars" role="radiogroup" aria-label="Rate this recipe">
+            <button
+              class="star"
+              type="button"
+              *ngFor="let v of [1,2,3,4,5]"
+              [class.active]="(myRating || 0) >= v"
+              (click)="setRating(v)"
+              [attr.aria-checked]="(myRating || 0) === v"
+              role="radio"
+            >
+              ★
+            </button>
+          </div>
+          <div class="meta-sub" *ngIf="ratingError">{{ ratingError }}</div>
+          <div class="meta-sub" *ngIf="!ratingError && myRating">You rated this {{ myRating }}/5</div>
+          <div class="meta-sub" *ngIf="!ratingError && !myRating">Tap a star to rate</div>
+        </div>
+      </div>
+    </div>
+
     <p class="recipe-description">{{ recipe()?.description }}</p>
-    
-    <div class="cover-photo-holder">
-      <img 
-        [src]="recipe()?.cover_photo || '../assets/empty-bowl.png'"
-        [alt]="recipe()?.title + ' cover photo'"
-      />
-    </div>
-    
-    <div class="recipe-meta">
-      <div class="data_title">
-        Preparation Time
-        <span class="data_variable">{{recipe()?.preparation_time}} min</span>
-      </div>
-      <div class="data_title">
-        Serves
-        <span>{{recipe()?.feeds_this_many}} {{recipe()?.feeds_this_many === 1 ? 'person' : 'people'}}</span>
-      </div>
-    </div>
 
     <div class="ingredients">
       <div class="data_title">Ingredients</div>
