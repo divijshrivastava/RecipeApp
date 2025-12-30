@@ -3,6 +3,7 @@ import { Recipe } from '../../model/recipe';
 import { RecipeService } from '../../services/recipe.service';
 import { Router } from '@angular/router';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -24,7 +25,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private recipeService: RecipeService
+    private recipeService: RecipeService,
+    public auth: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +76,40 @@ export class RecipeListComponent implements OnInit, OnDestroy {
           this.recipe_loaded = true;
         }
       });
+  }
+
+  get isBrowsingHub(): boolean {
+    return !this.searchQuery.trim() && this.selectedCategory === 'All';
+  }
+
+  get topCategories(): string[] {
+    return this.categories.filter((c) => c !== 'All').slice(0, 10);
+  }
+
+  get latestRecipes(): Recipe[] {
+    const copy = [...this.filteredRecipes];
+    copy.sort((a: any, b: any) => {
+      const ad = a.created_at ? Date.parse(a.created_at) : 0;
+      const bd = b.created_at ? Date.parse(b.created_at) : 0;
+      return bd - ad;
+    });
+    return copy.slice(0, 8);
+  }
+
+  get quickEasyRecipes(): Recipe[] {
+    const copy = [...this.filteredRecipes];
+    const filtered = copy.filter((r) => {
+      const isEasy = (r.difficulty || 'Medium') === 'Easy';
+      const isQuick = (r.preparation_time || 0) <= 30;
+      return isEasy || isQuick;
+    });
+    return filtered.slice(0, 8);
+  }
+
+  clearAll(): void {
+    this.searchQuery = '';
+    this.selectedCategory = 'All';
+    this.filterRecipes();
   }
 
   onSearchChange(query: string): void {

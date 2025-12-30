@@ -154,21 +154,33 @@ textarea.ng-invalid.ng-touched {
 .panel {
   background-color: var(--surface);
   border-radius: var(--border-radius);
-  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
   transition: var(--transition);
 }
 
 .panel:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .panel-heading {
-  background: var(--primary-color);
-  color: white;
-  padding: 24px;
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: 20px 24px;
   margin: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.panel-heading::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--primary-color);
 }
 
 .panel-heading h3,

@@ -1,34 +1,73 @@
 <div class="container">
-  <!-- Search and Filter Section -->
-  <div class="search-filter-section" *ngIf="recipe_loaded">
-    <div class="search-box">
-      <input
-        type="text"
-        class="form-control search-input"
-        placeholder="Search recipes by name, ingredient, or keyword..."
-        [value]="searchQuery"
-        (input)="onSearchChange($any($event.target).value)"
-      />
+  <header class="page-hero" *ngIf="recipe_loaded">
+    <div class="hero-copy">
+      <h1 class="page-title">Recipes</h1>
+      <p class="page-subtitle">Browse and save recipes shared by the community.</p>
     </div>
-    
-    <div class="filter-section">
-      <label for="category-filter" class="filter-label">Category:</label>
-      <select
-        id="category-filter"
-        class="form-control category-select"
-        [value]="selectedCategory"
-        (change)="onCategoryChange($any($event.target).value)"
-      >
-        <option *ngFor="let category of categories" [value]="category">
-          {{ category }}
-        </option>
-      </select>
-      
-      <div class="results-count" *ngIf="recipe_loaded">
+
+    <div class="hero-controls">
+      <div class="search-box">
+        <label class="sr-only" for="recipe-search">Search</label>
+        <input
+          id="recipe-search"
+          type="text"
+          class="form-control search-input"
+          placeholder="Search by title, ingredient, or keyword…"
+          [value]="searchQuery"
+          (input)="onSearchChange($any($event.target).value)"
+        />
+      </div>
+
+      <div class="filter-row">
+        <div class="category-chips" *ngIf="categories.length > 0">
+          <button
+            type="button"
+            class="chip"
+            [class.active]="selectedCategory === 'All'"
+            (click)="onCategoryChange('All')"
+          >
+            All
+          </button>
+          <button
+            *ngFor="let category of topCategories"
+            type="button"
+            class="chip"
+            [class.active]="selectedCategory === category"
+            (click)="onCategoryChange(category)"
+          >
+            {{ category }}
+          </button>
+        </div>
+
+        <div class="filter-controls">
+          <label for="category-filter" class="filter-label">Category</label>
+          <select
+            id="category-filter"
+            class="form-control category-select"
+            [value]="selectedCategory"
+            (change)="onCategoryChange($any($event.target).value)"
+          >
+            <option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </option>
+          </select>
+
+          <button
+            type="button"
+            class="btn btn-link"
+            (click)="clearAll()"
+            *ngIf="searchQuery.trim() || selectedCategory !== 'All'"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <div class="results-count">
         Showing {{ filteredRecipes.length }} of {{ recipes.length }} recipes
       </div>
     </div>
-  </div>
+  </header>
 
   <!-- Error State -->
   <div *ngIf="load_error" class="error-state">
@@ -63,13 +102,48 @@
       Clear Filters
     </button>
   </div>
-  
-  <!-- Recipe Cards -->
-  <div class="recipes-grid">
-    <app-recipe-summary 
-      *ngFor="let recipe of filteredRecipes" 
-      [dark_back]="dark_background" 
-      [recipe]="recipe">
-    </app-recipe-summary>
-  </div>
+
+  <section *ngIf="recipe_loaded && !load_error && filteredRecipes.length > 0">
+    <div class="section" *ngIf="isBrowsingHub">
+      <div class="section-header">
+        <h2 class="section-title">Latest</h2>
+        <div class="section-subtitle">Fresh recipes added recently.</div>
+      </div>
+      <div class="recipes-grid">
+        <app-recipe-summary
+          *ngFor="let recipe of latestRecipes"
+          [dark_back]="dark_background"
+          [recipe]="recipe"
+        ></app-recipe-summary>
+      </div>
+    </div>
+
+    <div class="section" *ngIf="isBrowsingHub">
+      <div class="section-header">
+        <h2 class="section-title">Quick & Easy</h2>
+        <div class="section-subtitle">Easy recipes and 30-minute ideas.</div>
+      </div>
+      <div class="recipes-grid">
+        <app-recipe-summary
+          *ngFor="let recipe of quickEasyRecipes"
+          [dark_back]="dark_background"
+          [recipe]="recipe"
+        ></app-recipe-summary>
+      </div>
+    </div>
+
+    <div class="section" *ngIf="!isBrowsingHub">
+      <div class="section-header">
+        <h2 class="section-title">Results</h2>
+        <div class="section-subtitle">Matching recipes based on your search and filters.</div>
+      </div>
+      <div class="recipes-grid">
+        <app-recipe-summary
+          *ngFor="let recipe of filteredRecipes"
+          [dark_back]="dark_background"
+          [recipe]="recipe"
+        ></app-recipe-summary>
+      </div>
+    </div>
+  </section>
 </div>

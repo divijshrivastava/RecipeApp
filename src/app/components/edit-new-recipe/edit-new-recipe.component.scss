@@ -74,10 +74,21 @@ form {
 }
 
 .panel-heading {
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.panel-heading::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 3px;
+  width: 100%;
   background: var(--primary-color);
-  color: white;
-  padding: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .panel-heading h4 {
