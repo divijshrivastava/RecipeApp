@@ -3,7 +3,7 @@ import { Recipe } from '../model/recipe';
 import { Observable, from, throwError, of } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
 import { AppwriteService } from './appwrite.service';
-import { Storage, ID } from 'appwrite';
+import { Storage, ID, Models, Permission, Role } from 'appwrite';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -17,6 +17,10 @@ export class RecipeService {
 
   constructor(private appWriteService: AppwriteService) {
     this.storage = new Storage(this.appWriteService.client);
+  }
+
+  private getCurrentUserSafe(): Observable<Models.User<Models.Preferences> | null> {
+    return from(this.appWriteService.account.get()).pipe(catchError(() => of(null)));
   }
 
   /**
@@ -119,41 +123,76 @@ export class RecipeService {
     this.loading.set(true);
     this.error.set(null);
 
-    // First create the recipe document
-    const recipeData = {
-      title: recipe.title,
-      description: recipe.description,
-      feeds_this_many: recipe.feeds_this_many,
-      preparation_time: recipe.preparation_time,
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
-      cover_photo: '',
-      keywords: recipe.keywords || [],
-      category: recipe.category || 'Uncategorized',
-      difficulty: recipe.difficulty || 'Medium',
-      created_at: new Date().toISOString(),
-    };
+    return this.getCurrentUserSafe().pipe(
+      switchMap((user) => {
+        // First create the recipe document
+        const recipeData: any = {
+          title: recipe.title,
+          description: recipe.description,
+          feeds_this_many: recipe.feeds_this_many,
+          preparation_time: recipe.preparation_time,
+          ingredients: recipe.ingredients,
+          instructions: recipe.instructions,
+          cover_photo: '',
+          keywords: recipe.keywords || [],
+          category: recipe.category || 'Uncategorized',
+          difficulty: recipe.difficulty || 'Medium',
+          created_at: new Date().toISOString(),
+        };
 
-    return from(
-      this.appWriteService.databases.createDocument(
-        environment.appwriteDatabaseId,
-        environment.appwriteRecipeCollectionId,
-        ID.unique(),
-        recipeData
-      )
-    ).pipe(
-      switchMap(async (document) => {
-        const recipeId = document.$id;
-        const uploadedRecipe = Recipe.recipeFromDocument(document);
-        
-        // Handle file uploads
-        await this.handleFileUploads(recipeId, files, uploadedRecipe);
-        
-        this.loading.set(false);
-        return uploadedRecipe;
+        // Helpful for future community features
+        if (user) {
+          recipeData.author_id = user.$id;
+          recipeData.author_name = (user as any).name || (user as any).email || 'User';
+        }
+
+        // If Appwrite collection has "Document Security" enabled, permissions must be set.
+        // We want public read, but only the creator can update/delete.
+        const permissions = user
+          ? [
+              Permission.read(Role.any()),
+              Permission.update(Role.user(user.$id)),
+              Permission.delete(Role.user(user.$id)),
+            ]
+          : [Permission.read(Role.any())];
+
+        // Appwrite SDK supports permissions as the last argument.
+        return from(
+          (this.appWriteService.databases as any).createDocument(
+            environment.appwriteDatabaseId,
+            environment.appwriteRecipeCollectionId,
+            ID.unique(),
+            recipeData,
+            permissions
+          )
+        );
       }),
-      catchError((error) => {
-        this.error.set(error.message || 'Failed to create recipe');
+      switchMap((document: any) => {
+        const recipeId = document.$id as string;
+        const uploadedRecipe = Recipe.recipeFromDocument(document);
+
+        // Handle file uploads
+        return from(this.handleFileUploads(recipeId, files, uploadedRecipe)).pipe(
+          map(() => {
+            this.loading.set(false);
+            return uploadedRecipe;
+          })
+        );
+      }),
+      catchError((error: any) => {
+        const code = error?.code;
+        const msg = error?.message || 'Failed to create recipe';
+
+        // Appwrite permission errors are usually 401/403.
+        if (code === 401 || code === 403) {
+          const help =
+            'Not authorized to create recipes. In Appwrite Console → Databases → your DB → your Recipes collection → Permissions, ensure **Create** includes **Users** (or your chosen role). If "Document Security" is enabled, this app now sets per-document permissions (public read, owner update/delete).';
+          this.error.set(help);
+          this.loading.set(false);
+          return throwError(() => new Error(help));
+        }
+
+        this.error.set(msg);
         this.loading.set(false);
         return throwError(() => error);
       })
