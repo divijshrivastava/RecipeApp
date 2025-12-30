@@ -1,0 +1,129 @@
+{
+    "id": "2",
+    "title": "Pizza",
+    "description": "Delicious Pizza Recipe",
+    "feeds_this_many": 4,
+    "preparation_time": 30,
+    "ingredients": [
+        {
+            "ingredient": "all-purpose flour",
+            "measure": "2 ¼ cups"
+        },
+        {
+            "ingredient": "instant yeast",
+            "measure": "2 ¼ teaspoons"
+        },
+        {
+            "ingredient": "sugar",
+            "measure": "1 teaspoon"
+        },
+        {
+            "ingredient": "salt",
+            "measure": "1 teaspoon"
+        },
+        {
+            "ingredient": "warm water",
+            "measure": "¾ cup"
+        },
+        {
+            "ingredient": "olive oil",
+            "measure": "1 tablespoon"
+        },
+        {
+            "ingredient": "crushed tomatoes",
+            "measure": "1 can (14 ounces)"
+        },
+        {
+            "ingredient": "garlic, minced",
+            "measure": "1 clove"
+        },
+        {
+            "ingredient": "dried basil",
+            "measure": "1 teaspoon"
+        },
+        {
+            "ingredient": "dried oregano",
+            "measure": "1 teaspoon"
+        },
+        {
+            "ingredient": "salt",
+            "measure": "to taste"
+        },
+        {
+            "ingredient": "bell pepper, thinly sliced",
+            "measure": "1"
+        },
+        {
+            "ingredient": "small red onion, thinly sliced",
+            "measure": "1"
+        },
+        {
+            "ingredient": "sliced mushrooms",
+            "measure": "1 cup"
+        },
+        {
+            "ingredient": "sliced black olives",
+            "measure": "1 cup"
+        },
+        {
+            "ingredient": "shredded mozzarella cheese",
+            "measure": "1 cup"
+        },
+        {
+            "ingredient": "crumbled feta cheese",
+            "measure": "½ cup"
+        },
+        {
+            "ingredient": "fresh basil leaves",
+            "measure": "for garnish"
+        }
+    ],
+    "instructions": [
+        {
+            "instruction": "Preheat your oven to 475°F (245°C). If you have a pizza stone, place it in the oven to preheat as well."
+        },
+        {
+            "instruction": "In a mixing bowl, combine the flour, instant yeast, sugar, and salt. Mix well."
+        },
+        {
+            "instruction": "Add the warm water and olive oil to the dry ingredients. Stir until a dough forms."
+        },
+        {
+            "instruction": "Transfer the dough onto a lightly floured surface and knead for about 5 minutes until it becomes smooth and elastic."
+        },
+        {
+            "instruction": "Place the dough in a greased bowl, cover it with a clean kitchen towel, and let it rise in a warm place for about 1 hour or until it doubles in size."
+        },
+        {
+            "instruction": "While the dough is rising, prepare the pizza sauce. In a saucepan, combine the crushed tomatoes, minced garlic, dried basil, dried oregano, salt, and pepper. Simmer over low heat for about 15-20 minutes, stirring occasionally."
+        },
+        {
+            "instruction": "Once the dough has risen, punch it down and divide it into two equal portions. Roll out each portion into a round shape to your desired thickness."
+        },
+        {
+            "instruction": "Transfer the pizza dough rounds onto a baking sheet or pizza peel lined with parchment paper."
+        },
+        {
+            "instruction": "Spread a generous amount of pizza sauce over each dough round, leaving a small border around the edges."
+        },
+        {
+            "instruction": "Top the pizzas with bell pepper slices, red onion slices, mushrooms, and black olives. Sprinkle shredded mozzarella cheese and crumbled feta cheese over the toppings."
+        },
+        {
+            "instruction": "Carefully transfer the pizzas (with the parchment paper) onto the preheated pizza stone or baking sheet."
+        },
+        {
+            "instruction": "Bake in the preheated oven for about 12-15 minutes or until the crust is golden and the cheese is bubbly and slightly browned."
+        },
+        {
+            "instruction": "Once done, remove the pizzas from the oven and let them cool for a few minutes."
+        },
+        {
+            "instruction": "Garnish with fresh basil leaves and slice into wedges."
+        }
+    ],
+    "cover_photo": "pizza.jpg",
+    "keywords": [
+        "recipe"
+    ]
+}

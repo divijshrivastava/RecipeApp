@@ -1,72 +1,123 @@
 <form [formGroup]="recipeForm">
-    <div class="cover-photo-holder">
-      <input type="file" (change)="readUrl($event)" />
-      <img [src]="cover_photo_for_viewing">
-    </div>
-  
-    <div style="clear:both">
-      <div class="newrecipe panel panel-default">
-        <div class="panel-heading">
-          <h4>Add new recipe</h4>
-        </div>
-        <div class="panel-body">
-          <div class="input-group">
-            <input type="text" [(ngModel)]="recipe_in_progress.title" class="form-control" formControlName="title" placeholder="Recipe Title"
-            />
-          </div>
-          <div class="input-group">
-            <textarea row="5" [(ngModel)]="recipe_in_progress.description" class="form-control" placeholder="Description" formControlName="description"></textarea>
-          </div>
-          <div class="input-group">
-            <input type="number" min="1" max="1000" [(ngModel)]="recipe_in_progress.feeds_this_many" class="form-control" placeholder="Feeds this many"
-              formControlName="feeds_this_many" />
-            <span class="input-group-addon">people</span>
-          </div>
-          <div class="input-group">
-            <input type="number" min="1" [(ngModel)]="recipe_in_progress.preparation_time" class="form-control" placeholder="Time taken to prepare"
-              formControlName="preparation_time" />
-            <span class="input-group-addon">minutes</span>
-          </div>
-          <div class="form-group">
-            <label>Ingredients </label>
-            <div class="ingredient" *ngFor="let ingredient of recipe_in_progress.ingredients, let i=index">
-              <input style="width:40%" type="text" formControlName="ingredient_{{i}}" [(ngModel)]='recipe_in_progress.ingredients[i].name'
-                placeholder="Ingredient">
-              <input type="text"  placeholder="How much?" formControlName="ingredient_measure_{{i}}"
-              />
-              <a (click)="removeIngredient(i)" style="font-weight: 80%; margin: 10px">Remove</a>
-            </div>
-  
-            <div>
-              <div class="btn btn-primary" (click)="addNewIngredient()">Add</div>
-            </div>
-            <label>Instructions</label>
-            <div class="instruction" 
-            *ngFor="let instruction of recipe_in_progress.instructions, let i=index">
-              <input style="width:40%" type="text" 
-              [(ngModel)]="recipe_in_progress.instructions[i].action" 
-              formControlName="instruction_{{i}}"
-                placeholder="Instruction" />
-              <input type="file"  
-              placeholder="Photo"
-               formControlName="instruction_photo_{{i}}" (change)="readInstUrl(i,$event)"
-              />
-              <img [src]="instruction_recipe_photos[i]" style="width:100px; height: 100px"/>
-              <a (click)="removeInstruction(i)" style="font-weight: 80%; margin: 10px">Remove</a>
-            </div>
-  
-            <div>
-              <div class="btn btn-primary" (click)="addNewInstructions()">Add</div>
-            </div>
-          </div>
+  <div class="cover-photo-holder">
+    <label for="cover-photo-input" class="file-upload-label">
+      Choose Cover Photo
+    </label>
+    <input id="cover-photo-input" type="file" accept="image/*" (change)="readUrl($event)" />
+    <div class="image-preview-container">
+      <div *ngIf="!cover_photo_for_viewing || cover_photo_for_viewing === 'assets/empty-bowl.png'"
+        class="image-placeholder">
+        <div>
+          <div style="font-size: 14px; font-weight: 500; color: var(--text-secondary);">No image selected</div>
+          <div style="font-size: 12px; margin-top: 8px; color: var(--text-secondary); opacity: 0.7;">Click button above
+            to upload a cover photo</div>
         </div>
       </div>
+      <img *ngIf="cover_photo_for_viewing && cover_photo_for_viewing !== 'assets/empty-bowl.png'"
+        [src]="cover_photo_for_viewing" [alt]="'Cover photo preview'" class="cover-image-preview">
     </div>
-  
-    <div class="input-group">
-      <input type="button" [disabled]="recipeForm.invalid" class="btn btn-primary" value="Add Recipe" (click)="addRecipeClicked()"
-      />
+  </div>
+
+  <div class="newrecipe panel panel-default">
+    <div class="panel-heading">
+      <h4>Create New Recipe</h4>
     </div>
-  
-  </form>
-  
+    <div class="panel-body">
+      <div class="input-group">
+        <label for="recipe-title">Recipe Title *</label>
+        <input id="recipe-title" type="text" [(ngModel)]="recipe_in_progress.title" class="form-control"
+          formControlName="title" placeholder="e.g., Chocolate Chip Cookies" />
+      </div>
+
+      <div class="input-group">
+        <label for="recipe-description">Description *</label>
+        <textarea id="recipe-description" rows="4" [(ngModel)]="recipe_in_progress.description" class="form-control"
+          placeholder="Tell us about this recipe..." formControlName="description">
+        </textarea>
+      </div>
+
+      <div class="input-group">
+        <label for="feeds-many">Serves *</label>
+        <div style="display: flex; align-items: center;">
+          <input id="feeds-many" type="number" min="1" max="1000" [(ngModel)]="recipe_in_progress.feeds_this_many"
+            class="form-control" placeholder="How many people?" formControlName="feeds_this_many"
+            style="flex: 1; border-radius: var(--border-radius) 0 0 var(--border-radius);" />
+          <span class="input-group-addon">people</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="prep-time">Preparation Time *</label>
+        <div style="display: flex; align-items: center;">
+          <input id="prep-time" type="number" min="1" [(ngModel)]="recipe_in_progress.preparation_time"
+            class="form-control" placeholder="Time in minutes" formControlName="preparation_time"
+            style="flex: 1; border-radius: var(--border-radius) 0 0 var(--border-radius);" />
+          <span class="input-group-addon">minutes</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="recipe-category">Category *</label>
+        <select id="recipe-category" class="form-control" [(ngModel)]="recipe_in_progress.category"
+          formControlName="category">
+          <option value="Uncategorized">Uncategorized</option>
+          <option value="Breakfast">Breakfast</option>
+          <option value="Lunch">Lunch</option>
+          <option value="Dinner">Dinner</option>
+          <option value="Dessert">Dessert</option>
+          <option value="Snack">Snack</option>
+          <option value="Beverage">Beverage</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="recipe-difficulty">Difficulty *</label>
+        <select id="recipe-difficulty" class="form-control" [(ngModel)]="recipe_in_progress.difficulty"
+          formControlName="difficulty">
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Ingredients *</label>
+        <div class="ingredient" *ngFor="let ingredient of recipe_in_progress.ingredients; let i=index">
+          <input type="text" formControlName="ingredient_{{i}}" [(ngModel)]='recipe_in_progress.ingredients[i].name'
+            placeholder="Ingredient name" class="form-control" />
+          <input type="text" placeholder="Quantity (e.g., 2 cups)" formControlName="ingredient_measure_{{i}}"
+            class="form-control" (blur)="updateIngredientMeasure(i, $event)" />
+          <button type="button" class="btn-link" (click)="removeIngredient(i)">Remove</button>
+        </div>
+        <button type="button" class="btn btn-secondary" (click)="addNewIngredient()">
+          Add Ingredient
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label>Instructions *</label>
+        <div class="instruction" *ngFor="let instruction of recipe_in_progress.instructions; let i=index">
+          <input type="text" [(ngModel)]="recipe_in_progress.instructions[i].action" formControlName="instruction_{{i}}"
+            placeholder="Step description" class="form-control" />
+          <input type="file" accept="image/*" placeholder="Photo" formControlName="instruction_photo_{{i}}"
+            (change)="readInstUrl(i, $event)" />
+          <img *ngIf="instruction_recipe_photos[i]" [src]="instruction_recipe_photos[i]"
+            [alt]="'Step ' + (i + 1) + ' photo'" />
+          <button type="button" class="btn-link" (click)="removeInstruction(i)">Remove</button>
+        </div>
+        <button type="button" class="btn btn-secondary" (click)="addNewInstructions()">
+          Add Instruction
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-section">
+    <button type="button" [disabled]="recipeForm.invalid" class="btn btn-primary" (click)="addRecipeClicked()">
+      Create Recipe
+    </button>
+    <div *ngIf="recipeForm.invalid && recipeForm.touched" style="margin-top: 16px; color: #a94442; font-size: 14px;">
+      Please fill in all required fields correctly.
+    </div>
+  </div>
+</form>

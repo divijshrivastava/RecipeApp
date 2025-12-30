@@ -4,4 +4,5 @@ export const environment = {
   appwriteProjectId: '',
   appwriteDatabaseId: '',
   appwriteRecipeCollectionId: '',
+  appwriteStorageBucketId: 'default',
 };

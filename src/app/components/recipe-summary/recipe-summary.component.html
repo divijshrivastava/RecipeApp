@@ -1,25 +1,45 @@
 <div class="container">
-<div [ngStyle]='current_styles' [ngClass]='dark_back?"
-recipe panel panel-default":"dark_background panel panel-default"' (click)='userClicked()'>
-
-
-  <div class="panel-heading">
-    <h3 class="panel-title">{{ recipe?.title }}</h3>
+  <div 
+    [ngStyle]='current_styles' 
+    [ngClass]='dark_back ? "recipe panel panel-default" : "dark_background panel panel-default"' 
+    (click)='userClicked()'>
+    
+    <div class="panel-heading">
+      <div class="recipe-header">
+        <h3 class="panel-title">{{ recipe?.title }}</h3>
+        <div class="recipe-badges">
+          <span class="badge badge-category" *ngIf="recipe?.category">
+            {{ recipe?.category }}
+          </span>
+          <span class="badge badge-difficulty" 
+            [class.easy]="recipe?.difficulty === 'Easy'"
+            [class.medium]="recipe?.difficulty === 'Medium'"
+            [class.hard]="recipe?.difficulty === 'Hard'">
+            {{ recipe?.difficulty || 'Medium' }}
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="panel-body">
+      <p>{{ recipe?.description }}</p>
+      
+      <div class="cover-photo-holder">
+        <img 
+          [src]="recipe?.cover_photo || '../assets/empty-bowl.png'"
+          [alt]="recipe?.title + ' cover photo'"
+        />
+      </div>
+      
+      <div class="data_title">
+        Preparation Time
+        <span class="data_variable">{{recipe?.preparation_time}} min</span>
+      </div>
+      
+      <div class="data_title">
+        Serves
+        <span>{{recipe?.feeds_this_many}} {{recipe?.feeds_this_many === 1 ? 'person' : 'people'}}</span>
+      </div>
+    </div>
   </div>
-  <div class="panel-body">
-    <p>{{ recipe?.description }}</p>
-    <div class=" cover-photo-holder ">
-      <img src="{{ recipe?.cover_photo? recipe?.cover_photo:'../assets/empty-bowl.png'}}"
-       style="width: 150px; height: 150px; margin: 6px"
-      />
-    </div>
-    <div class="data_title">Preparation Time:
-      <span class="data_variable">{{recipe?.preparation_time}} minutes</span>
-    </div>
-    <div class="data_title">Feeds this many people:
-      <span>{{recipe?.feeds_this_many}}</span>
-    </div>
-  </div>
-
-</div>
 </div>
