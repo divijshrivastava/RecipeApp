@@ -134,6 +134,24 @@ Make sure your production environment file (`src/environments/environment.prod.t
 - `appwriteRecipeCollectionId`: Your collection ID
 - `appwriteStorageBucketId`: Your storage bucket ID
 
+### Admin delete (Super Admin)
+
+This repo includes a Vercel Serverless Function that allows **super admins** (members of an Appwrite Team) to delete any recipe, including legacy recipes without the correct per-document permissions:
+
+- Endpoint: `DELETE /api/admin/delete-recipe?recipeId=...`
+- Auth: the frontend sends an Appwrite JWT; the function verifies the user is a member of the configured admin Team.
+
+To enable this on Vercel, set these **Project Environment Variables**:
+
+- `APPWRITE_ENDPOINT`
+- `APPWRITE_PROJECT_ID`
+- `APPWRITE_API_KEY` (Server API key with permissions to delete documents + read team memberships)
+- `APPWRITE_DATABASE_ID`
+- `APPWRITE_RECIPE_COLLECTION_ID`
+- `APPWRITE_ADMIN_TEAM_ID`
+
+After setting env vars, redeploy. In the app, super admins will be able to delete any recipe.
+
 ## Build Command
 
 For all platforms, use:

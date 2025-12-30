@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { FavoritesService } from '../../services/favorites.service';
 import { RatingsService, RatingSummary } from '../../services/ratings.service';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-recipe-details',
@@ -31,7 +32,8 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     public favorites: FavoritesService,
     public auth: AuthService,
-    private ratings: RatingsService
+    private ratings: RatingsService,
+    private admin: AdminService
   ) {
     this.ratingsConfigured = this.ratings.isConfigured();
   }
@@ -120,14 +122,19 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     if (!this.canDelete()) return;
 
     if (confirm(`Are you sure you want to delete "${recipe.title}"?`)) {
-      this.recipeService
-        .deleteRecipe(recipe.id)
+      // If the current user is a super admin, delete via serverless function so
+      // admins can delete legacy recipes that don't include admin team permissions.
+      const delete$ = this.auth.isAdmin()
+        ? this.admin.deleteRecipeAsAdmin(recipe.id)
+        : this.recipeService.deleteRecipe(recipe.id);
+
+      delete$
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
             this.router.navigate(['/recipes']);
           },
-          error: (error) => {
+          error: (error: any) => {
             alert(
               'Failed to delete recipe: ' + (error.message || 'Unknown error')
             );
