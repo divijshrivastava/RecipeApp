@@ -3,8 +3,13 @@ node_modules
 .vscode
 *.md
 e2e
-src
-angular.json
-tsconfig*.json
-!dist/recipe-app/browser
+# IMPORTANT:
+# Do NOT ignore Angular workspace files. Vercel runs `ng build` during deploy.
+# If these are ignored, Angular CLI errors with:
+# "This command is not available when running the Angular CLI outside a workspace."
+#
+# Keep `src/`, `angular.json`, and `tsconfig*.json` included.
+
+# (Optional) If you want to deploy prebuilt assets only, you can revisit this file
+# and change the Vercel setup to publish `dist/` without running `ng build`.
 
