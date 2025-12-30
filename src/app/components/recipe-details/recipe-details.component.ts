@@ -128,18 +128,22 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
         ? this.admin.deleteRecipeAsAdmin(recipe.id)
         : this.recipeService.deleteRecipe(recipe.id);
 
-      delete$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            this.router.navigate(['/recipes']);
-          },
-          error: (error: any) => {
-            alert(
-              'Failed to delete recipe: ' + (error.message || 'Unknown error')
-            );
-          },
-        });
+      delete$.pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => {
+          this.router.navigate(['/recipes']);
+        },
+        error: (error: any) => {
+          const serverMsg =
+            error?.error?.error ||
+            error?.error?.message ||
+            error?.error?.details ||
+            null;
+          alert(
+            'Failed to delete recipe: ' +
+              (serverMsg || error?.message || 'Unknown error')
+          );
+        },
+      });
     }
   }
 

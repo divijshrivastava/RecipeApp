@@ -1,4 +1,4 @@
-const { Client, Account, Databases, Teams } = require('appwrite');
+const sdk = require('node-appwrite');
 
 /**
  * Vercel Serverless Function
@@ -52,8 +52,11 @@ module.exports = async (req, res) => {
   }
 
   // Identify caller via JWT (no API key)
-  const authClient = new Client().setEndpoint(endpoint).setProject(projectId).setJWT(jwt);
-  const account = new Account(authClient);
+  const authClient = new sdk.Client()
+    .setEndpoint(endpoint)
+    .setProject(projectId)
+    .setJWT(jwt);
+  const account = new sdk.Account(authClient);
 
   let user;
   try {
@@ -63,9 +66,12 @@ module.exports = async (req, res) => {
   }
 
   // Admin client using API key
-  const adminClient = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
-  const teams = new Teams(adminClient);
-  const databases = new Databases(adminClient);
+  const adminClient = new sdk.Client()
+    .setEndpoint(endpoint)
+    .setProject(projectId)
+    .setKey(apiKey);
+  const teams = new sdk.Teams(adminClient);
+  const databases = new sdk.Databases(adminClient);
 
   // Verify membership in admin team
   try {
@@ -86,7 +92,9 @@ module.exports = async (req, res) => {
     await databases.deleteDocument(databaseId, recipeCollectionId, recipeId);
     return res.status(200).json({ ok: true });
   } catch (e) {
-    return res.status(500).json({ error: 'Failed to delete recipe', details: e?.message || String(e) });
+    return res
+      .status(500)
+      .json({ error: 'Failed to delete recipe', details: e?.message || String(e) });
   }
 };
 
