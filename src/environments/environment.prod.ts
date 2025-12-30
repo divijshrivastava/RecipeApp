@@ -8,4 +8,7 @@ export const environment = {
   // Optional: community collections (configure in Appwrite to enable)
   appwriteFavoritesCollectionId: '',
   appwriteRatingsCollectionId: '',
+  // Admin config
+  appwriteAdminTeamId: '',
+  superAdminUserIds: [] as string[],
 };

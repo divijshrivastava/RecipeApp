@@ -94,6 +94,9 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     const recipe = this.recipe();
     if (!user || !recipe?.id) return false;
 
+    // Super admins can delete any recipe.
+    if (this.auth.isAdmin()) return true;
+
     // Prefer explicit author id if present.
     if (recipe.author_id) return recipe.author_id === user.$id;
 

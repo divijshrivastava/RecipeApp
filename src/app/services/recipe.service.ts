@@ -148,13 +148,19 @@ export class RecipeService {
 
         // If Appwrite collection has "Document Security" enabled, permissions must be set.
         // We want public read, but only the creator can update/delete.
-        const permissions = user
+        const permissions: string[] = user
           ? [
               Permission.read(Role.any()),
               Permission.update(Role.user(user.$id)),
               Permission.delete(Role.user(user.$id)),
             ]
           : [Permission.read(Role.any())];
+
+        const adminTeamId = (environment.appwriteAdminTeamId || '').trim();
+        if (adminTeamId) {
+          // Super admin team can delete any recipe
+          permissions.push(Permission.delete(Role.team(adminTeamId)));
+        }
 
         // Appwrite SDK supports permissions as the last argument.
         return from(
