@@ -13,10 +13,10 @@ export class EditNewRecipeComponent implements OnInit {
   recipe_in_progress: Recipe;
   disabled_add_recipe_button: boolean;
   recipeForm: FormGroup = new FormGroup({});
-  cover_photo_for_viewing : string= 'assets/empty-bowl.png';
-  instruction_recipe_photos: string[] | any;
+  cover_photo_for_viewing: string = 'assets/empty-bowl.png';
+  instruction_recipe_photos: string[] = [];
   cover_photo_for_upload: File | undefined;
-  instruction_photo_for_upload: File[];
+  instruction_photo_for_upload: (File | undefined)[] = [];
 
   buildRecipeForm(): void {
     const fg :any= {
@@ -25,15 +25,18 @@ export class EditNewRecipeComponent implements OnInit {
       'feeds_this_many': new FormControl(this.recipe_in_progress.feeds_this_many, [Validators.required, Validators.min(1),
       Validators.max(1000)]),
       'preparation_time':
-        new FormControl(this.recipe_in_progress.preparation_time, [Validators.required, Validators.min(1), Validators.max(1000)])
+        new FormControl(this.recipe_in_progress.preparation_time, [Validators.required, Validators.min(1), Validators.max(1000)]),
+      'category': new FormControl(this.recipe_in_progress.category || 'Uncategorized', [Validators.required]),
+      'difficulty': new FormControl(this.recipe_in_progress.difficulty || 'Medium', [Validators.required])
     };
     for (let i = 0; i < this.recipe_in_progress.ingredients.length; i++) {
       fg['ingredient_' + i] =
         new FormControl(this.recipe_in_progress.ingredients[i].name,
           [Validators.required]);
-      fg['ingredient_measure_' + i] = new FormControl(
-        this.recipe_in_progress.ingredients[i].quantity,
-        [Validators.required]);
+      const measureValue = this.recipe_in_progress.ingredients[i].quantity && this.recipe_in_progress.ingredients[i].unit
+        ? `${this.recipe_in_progress.ingredients[i].quantity} ${this.recipe_in_progress.ingredients[i].unit}`
+        : '';
+      fg['ingredient_measure_' + i] = new FormControl(measureValue, [Validators.required]);
     }
 
     for (let i = 0; i < this.recipe_in_progress.instructions.length; i++) {
@@ -48,40 +51,38 @@ export class EditNewRecipeComponent implements OnInit {
   }
 
   constructor(private recipeService: RecipeService, private router: Router) {
-    this.recipe_in_progress = new Recipe('', '', '', 1, 1, [], [], "", []);
+    this.recipe_in_progress = Recipe.inputRecipe();
     this.disabled_add_recipe_button = true;
     this.instruction_recipe_photos = [];
-    this.cover_photo_for_upload ;
+    this.cover_photo_for_upload = undefined;
     this.instruction_photo_for_upload = [];
     this.buildRecipeForm();
   }
 
-  readUrl(event:any): void {
-    if (event.target.files && event.target.files[0]) {
-      const reader:any = new FileReader();
+  readUrl(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files[0]) {
+      const reader = new FileReader();
 
-      reader.onload = (rdr:any) => {
-        this.cover_photo_for_viewing = reader.result;
+      reader.onload = () => {
+        this.cover_photo_for_viewing = reader.result as string;
       };
 
-      reader.readAsDataURL(event.target.files[0]);
-      this.cover_photo_for_upload = event.target.files[0];
-
-      // setTimeout(() => { console.log('Cover photo:' + this.cover_photo_for_viewing); }, 4000);
+      reader.readAsDataURL(target.files[0]);
+      this.cover_photo_for_upload = target.files[0];
     }
   }
 
-  readInstUrl(i: any, event:any): void {
-    if (event.target.files && event.target.files[0]) {
+  readInstUrl(i: number, event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files[0]) {
       const reader = new FileReader();
 
-      reader.onload = (rdr) => {
-        this.instruction_recipe_photos[i] = reader.result;
-        console.log('Inside readInstUrl, instruction_recipe_photos[' + i + ']: ' + this.instruction_recipe_photos[i]);
+      reader.onload = () => {
+        this.instruction_recipe_photos[i] = reader.result as string;
       };
-      reader.readAsDataURL(event.target.files[0]);
-      this.instruction_photo_for_upload[i] = event.target.files[0];
-      //      setTimeout(() => console.log('instruction photo' + this.instruction_recipe_photos[i]));
+      reader.readAsDataURL(target.files[0]);
+      this.instruction_photo_for_upload[i] = target.files[0];
     }
   }
   
@@ -89,37 +90,46 @@ export class EditNewRecipeComponent implements OnInit {
   }
 
   addRecipeClicked() {
-    this.recipeService.addRecipe(this.recipe_in_progress,
+    if (this.recipeForm.invalid) {
+      this.recipeForm.markAllAsTouched();
+      return;
+    }
+
+    this.disabled_add_recipe_button = true;
+
+    this.recipeService.addRecipe(
+      this.recipe_in_progress,
       {
         cover_photo: this.cover_photo_for_upload,
         instruction_photo: this.instruction_photo_for_upload
       }
-    ).then((recipe) =>
-      this.router.navigate(['recipes', recipe.id]));
+    ).subscribe({
+      next: (recipe) => {
+        this.router.navigate(['recipes', recipe.id]);
+      },
+      error: (error) => {
+        alert('Failed to create recipe: ' + (error.message || 'Unknown error'));
+        this.disabled_add_recipe_button = false;
+      }
+    });
   }
 
-  validateForm(event: any): void {
-
+  validateForm(): void {
     this.disabled_add_recipe_button = true;
-    console.log(this.recipe_in_progress.title);
-    const feeds = parseInt('' + this.recipe_in_progress.feeds_this_many, 10);
-    const prepTime = parseInt('' + this.recipe_in_progress.preparation_time, 10);
+    const feeds = parseInt(String(this.recipe_in_progress.feeds_this_many), 10);
+    const prepTime = parseInt(String(this.recipe_in_progress.preparation_time), 10);
 
-    if (!this.recipe_in_progress.title ||
-      this.recipe_in_progress.title.length < 1) {
+    if (!this.recipe_in_progress.title || this.recipe_in_progress.title.length < 1) {
       return;
     }
-    if (!this.recipe_in_progress.description ||
-      this.recipe_in_progress.description.length < 1) {
+    if (!this.recipe_in_progress.description || this.recipe_in_progress.description.length < 1) {
       return;
     }
-    if (!this.recipe_in_progress.preparation_time
-      || this.recipe_in_progress.preparation_time < 1) {
+    if (!this.recipe_in_progress.preparation_time || this.recipe_in_progress.preparation_time < 1) {
       return;
     }
 
-    if (!this.recipe_in_progress.feeds_this_many
-      || this.recipe_in_progress.feeds_this_many < 1) {
+    if (!this.recipe_in_progress.feeds_this_many || this.recipe_in_progress.feeds_this_many < 1) {
       return;
     }
 
@@ -130,73 +140,93 @@ export class EditNewRecipeComponent implements OnInit {
       return;
     }
 
-    if (this.recipe_in_progress.ingredients &&
-      this.recipe_in_progress.ingredients.length > 0) {
+    if (this.recipe_in_progress.ingredients && this.recipe_in_progress.ingredients.length > 0) {
       for (const ingr of this.recipe_in_progress.ingredients) {
-        if (!ingr.quantity|| ingr.unit.length < 1) {
-          console.log('Returning due to ingredient measure');
+        if (!ingr.quantity || !ingr.unit || ingr.unit.length < 1) {
           return;
         }
-
-        if (!ingr.name|| ingr.name.length < 1) {
-          console.log('Returning due to ingredient length');
+        if (!ingr.name || ingr.name.length < 1) {
           return;
         }
       }
     }
 
-    if (this.recipe_in_progress.instructions &&
-      this.recipe_in_progress.instructions.length > 0) {
+    if (this.recipe_in_progress.instructions && this.recipe_in_progress.instructions.length > 0) {
       for (const inst of this.recipe_in_progress.instructions) {
-        if (!inst.action|| inst.action.length < 1) {
-          console.log('Returning due to instruction length');
+        if (!inst.action || inst.action.length < 1) {
           return;
         }
       }
     }
     this.disabled_add_recipe_button = false;
-    //    console.log(JSON.stringify(event.target.value, null, 2));
   }
 
   addNewIngredient() {
     if (!this.recipe_in_progress.ingredients) {
-      this.recipe_in_progress.ingredients = [{ name: "" , quantity: 0, unit:""}];
+      this.recipe_in_progress.ingredients = [{ name: "", quantity: 0, unit: "" }];
     } else {
-      this.recipe_in_progress.ingredients.push({ name: "", quantity: 0, unit:''});
+      this.recipe_in_progress.ingredients.push({ name: "", quantity: 0, unit: "" });
     }
-
     this.buildRecipeForm();
-
   }
 
   removeIngredient(ingredient_index: number): void {
-    this.recipe_in_progress.ingredients.splice(ingredient_index, 1);
-    console.log(this.recipe_in_progress.ingredients.length);
-    this.buildRecipeForm();
+    if (this.recipe_in_progress.ingredients && ingredient_index >= 0 && ingredient_index < this.recipe_in_progress.ingredients.length) {
+      this.recipe_in_progress.ingredients.splice(ingredient_index, 1);
+      this.buildRecipeForm();
+    }
+  }
+
+  updateIngredientMeasure(index: number, event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const value = target.value.trim();
+    if (value && this.recipe_in_progress.ingredients[index]) {
+      // Try to parse quantity and unit from the input (e.g., "2 cups" -> quantity: 2, unit: "cups")
+      const parts = value.split(/\s+/);
+      if (parts.length >= 2) {
+        const quantity = parseFloat(parts[0]);
+        if (!isNaN(quantity)) {
+          this.recipe_in_progress.ingredients[index].quantity = quantity;
+          this.recipe_in_progress.ingredients[index].unit = parts.slice(1).join(' ');
+        }
+      } else if (parts.length === 1) {
+        // If only one part, assume it's the unit and set quantity to 1
+        const quantity = parseFloat(parts[0]);
+        if (!isNaN(quantity)) {
+          this.recipe_in_progress.ingredients[index].quantity = quantity;
+          this.recipe_in_progress.ingredients[index].unit = '';
+        } else {
+          this.recipe_in_progress.ingredients[index].quantity = 1;
+          this.recipe_in_progress.ingredients[index].unit = parts[0];
+        }
+      }
+    }
   }
 
   addNewInstructions() {
     if (!this.recipe_in_progress.instructions) {
-      this.recipe_in_progress.instructions = [{ action: "", photo: ""}];
+      this.recipe_in_progress.instructions = [{ action: "", photo: "" }];
       this.instruction_recipe_photos = [];
       this.instruction_photo_for_upload = [];
-      console.log('addNewInstructions a');
     } else {
-      this.recipe_in_progress.instructions.push({ action: "", photo: ""});
+      this.recipe_in_progress.instructions.push({ action: "", photo: "" });
       this.instruction_recipe_photos.push('');
-      this.instruction_photo_for_upload.push();
-      console.log('addNewInstructions b instruction_recipe_photos length=' + this.instruction_recipe_photos.length);
+      this.instruction_photo_for_upload.push(undefined);
     }
-    console.log('Instruction recipe photo' + this.instruction_recipe_photos);
     this.buildRecipeForm();
   }
 
   removeInstruction(instruction_index: number): void {
-    this.recipe_in_progress.instructions.splice(instruction_index, 1);
-    console.log('Instruction length' + this.recipe_in_progress.instructions.length);
-    this.instruction_recipe_photos.splice(instruction_index, 1);
-    this.instruction_photo_for_upload.splice(instruction_index, 1);
-    this.buildRecipeForm();
+    if (this.recipe_in_progress.instructions && instruction_index >= 0 && instruction_index < this.recipe_in_progress.instructions.length) {
+      this.recipe_in_progress.instructions.splice(instruction_index, 1);
+      if (this.instruction_recipe_photos.length > instruction_index) {
+        this.instruction_recipe_photos.splice(instruction_index, 1);
+      }
+      if (this.instruction_photo_for_upload.length > instruction_index) {
+        this.instruction_photo_for_upload.splice(instruction_index, 1);
+      }
+      this.buildRecipeForm();
+    }
   }
 }
 

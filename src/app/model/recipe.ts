@@ -12,9 +12,13 @@ export class Recipe {
   public instructions: Instruction[];
   public cover_photo: string;
   public keywords: string[];
+  public category?: string;
+  public difficulty?: 'Easy' | 'Medium' | 'Hard';
+  public created_at?: string;
+  public updated_at?: string;
 
   public static inputRecipe(): Recipe {
-    return new Recipe('', '', '', 1, 1, [], [], '', []);
+    return new Recipe('', '', '', 1, 1, [], [], '', [], 'Uncategorized', 'Medium');
   }
 
   public static recipeFromJson(obj: any): Recipe {
@@ -37,10 +41,12 @@ export class Recipe {
     const description = document['description'];
     const feeds_this_many = document['feeds_this_many'];
     const preparation_time = document['preparation_time'];
-    const ingredients: Ingredient[] = document['ingredients'];
-    const instructions: Instruction[] = document['instructions'];
-    const cover_photo = document['cover_photo'];
-    const keywords = document['keywords'];
+    const ingredients: Ingredient[] = document['ingredients'] || [];
+    const instructions: Instruction[] = document['instructions'] || [];
+    const cover_photo = document['cover_photo'] || '';
+    const keywords = document['keywords'] || [];
+    const category = document['category'] || 'Uncategorized';
+    const difficulty = document['difficulty'] || 'Medium';
     return new Recipe(
       id,
       title,
@@ -50,7 +56,9 @@ export class Recipe {
       ingredients,
       instructions,
       cover_photo,
-      keywords
+      keywords,
+      category,
+      difficulty
     );
   }
 
@@ -63,7 +71,9 @@ export class Recipe {
     ingredients: Ingredient[],
     instructions: Instruction[],
     cover_photo: string,
-    keywords: string[]
+    keywords: string[],
+    category: string = 'Uncategorized',
+    difficulty: 'Easy' | 'Medium' | 'Hard' = 'Medium'
   ) {
     this.id = id;
     this.title = title;
@@ -74,5 +84,7 @@ export class Recipe {
     this.instructions = instructions;
     this.cover_photo = cover_photo;
     this.keywords = keywords;
+    this.category = category;
+    this.difficulty = difficulty;
   }
 }

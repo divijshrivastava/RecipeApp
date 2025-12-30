@@ -1,13 +1,76 @@
+<div class="container">
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section" *ngIf="recipe_loaded">
+    <div class="search-box">
+      <input
+        type="text"
+        class="form-control search-input"
+        placeholder="Search recipes by name, ingredient, or keyword..."
+        [value]="searchQuery"
+        (input)="onSearchChange($any($event.target).value)"
+      />
+    </div>
+    
+    <div class="filter-section">
+      <label for="category-filter" class="filter-label">Category:</label>
+      <select
+        id="category-filter"
+        class="form-control category-select"
+        [value]="selectedCategory"
+        (change)="onCategoryChange($any($event.target).value)"
+      >
+        <option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
+      
+      <div class="results-count" *ngIf="recipe_loaded">
+        Showing {{ filteredRecipes.length }} of {{ recipes.length }} recipes
+      </div>
+    </div>
+  </div>
 
-<div class="container" >
-<div *ngIf="load_error">
-  <span>{{ error_text }} <a href="" [routerLink]="['/recipe']">Reload</a></span>
-</div>
+  <!-- Error State -->
+  <div *ngIf="load_error" class="error-state">
+    <div class="error-icon">!</div>
+    <h3>Error Loading Recipes</h3>
+    <p>{{ error_text }}</p>
+    <button class="btn btn-primary" (click)="loadRecipes()" style="margin-top: 16px;">
+      Try Again
+    </button>
+  </div>
 
-<div *ngIf="!recipe_loaded && !load_error" style="color: brown">Loading Recipes.. please be patient!</div>
-<div *ngIf="!load_error && recipe_loaded && (!recipes || !recipes.length)">There are no recipes. Why not add one now?
-</div>
-  <app-recipe-summary *ngFor="let recipe of recipes" [dark_back]="dark_background" [recipe]="recipe"
-    (userClick)="userSelectedRecipe($event)" (zoomIn)='zoomClicked($event)' >
-  </app-recipe-summary>
+  <!-- Loading State -->
+  <div *ngIf="!recipe_loaded && !load_error" class="loading">
+    <div class="loading-spinner"></div>
+    <div>Loading recipes...</div>
+  </div>
+  
+  <!-- Empty State -->
+  <div *ngIf="!load_error && recipe_loaded && (!filteredRecipes || !filteredRecipes.length)" class="empty-state">
+    <h2 style="margin-bottom: 8px;" *ngIf="recipes.length === 0">No recipes yet</h2>
+    <h2 style="margin-bottom: 8px;" *ngIf="recipes.length > 0">No recipes match your search</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 24px;" *ngIf="recipes.length === 0">
+      Why not add one now?
+    </p>
+    <p style="color: var(--text-secondary); margin-bottom: 24px;" *ngIf="recipes.length > 0">
+      Try adjusting your search or filter criteria.
+    </p>
+    <a *ngIf="recipes.length === 0" [routerLink]="['/newRecipe']" class="btn btn-primary">
+      Create Your First Recipe
+    </a>
+    <button *ngIf="recipes.length > 0" class="btn btn-primary" (click)="searchQuery = ''; selectedCategory = 'All'; filterRecipes()">
+      Clear Filters
+    </button>
+  </div>
+  
+  <!-- Recipe Cards -->
+  <div class="recipes-grid">
+    <app-recipe-summary 
+      *ngFor="let recipe of filteredRecipes" 
+      [dark_back]="dark_background" 
+      [recipe]="recipe"
+      (userClick)="userSelectedRecipe($event)">
+    </app-recipe-summary>
+  </div>
 </div>

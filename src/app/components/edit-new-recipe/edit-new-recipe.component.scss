@@ -1,50 +1,249 @@
-div.instruction input.form-control {
-    width: 60%;
-    display: inline;
+form {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.cover-photo-holder {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.cover-photo-holder .image-preview-container {
+  margin-top: 20px;
+  display: inline-block;
+  position: relative;
+}
+
+.cover-photo-holder .image-placeholder {
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0 auto;
+}
+
+.cover-photo-holder input[type="file"] {
+  display: none;
+}
+
+.cover-photo-holder label.file-upload-label {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  margin-bottom: 16px;
+  font-size: 14px;
+  letter-spacing: 0.025em;
+}
+
+.cover-photo-holder label:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.cover-photo-holder .cover-image-preview {
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  display: block;
+}
+
+.newrecipe {
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.panel-heading {
+  background: var(--primary-color);
+  color: white;
+  padding: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-heading h4 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+
+.panel-body {
+  padding: 24px;
+}
+
+.form-group {
+  margin-bottom: 32px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+  letter-spacing: -0.01em;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+  letter-spacing: -0.01em;
+}
+
+.ingredient,
+.instruction {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: var(--background);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.ingredient:hover,
+.instruction:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.ingredient input[type="text"],
+.instruction input[type="text"] {
+  flex: 1;
+  min-width: 0;
+}
+
+.ingredient input[placeholder="How much?"] {
+  flex: 0.8;
+}
+
+.instruction input[type="file"] {
+  flex: 0.6;
+  padding: 8px;
+  border: 1px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--surface);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 13px;
+}
+
+.instruction input[type="file"]:hover {
+  border-color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+.instruction img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--border-color);
+}
+
+.ingredient .btn-link,
+.instruction .btn-link {
+  align-self: center;
+  white-space: nowrap;
+}
+
+.btn {
+  margin-right: 12px;
+  margin-bottom: 12px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group-addon {
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  border-left: none;
+  padding: 12px 16px;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.input-group .form-control {
+  border-right: none;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.input-group .form-control:focus {
+  border-right: none;
+}
+
+.input-group .form-control:focus + .input-group-addon {
+  border-color: var(--primary-color);
+}
+
+.submit-section {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-color);
+}
+
+.submit-section .btn {
+  padding: 14px 40px;
+  font-size: 15px;
+  font-weight: 500;
+  min-width: 180px;
+}
+
+@media (max-width: 768px) {
+  form {
+    padding: 16px;
   }
-  
-  div.instruction {
-    margin-bottom: 7px;
+
+  .ingredient,
+  .instruction {
+    flex-direction: column;
   }
-  
-  .newrecipe {
-    float: left;
-    width: 550px;
+
+  .ingredient input,
+  .instruction input {
+    width: 100% !important;
   }
-  
+
+  .instruction img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+  }
+
   .cover-photo-holder img {
-    width: 300px;
-    height: 300px;
-    border: 0px;
+    max-width: 100%;
   }
-  
-  .cover-photo-holder{
-    float:right;
-    
-  }
-  
-  div.add-ingredient input,
-  div.add-instruction input {
-    width: 50px;
-  }
-  
-  @media(min-width: 850px) {
-    div.cover-photo-holder img {
-      float: right;
-    }
-  }
-  
-  .ingredient {
-    font-weight: 100%;
-  }
-  
-  input.ng-valid,
-  textarea.ng-valid {
-    border-left: 5px solid #42a948;
-  }
-  
-  input.ng-invalid,
-  textarea.ng-invalid {
-    border-left: 5px solid #a94442;
-  }
+}
   

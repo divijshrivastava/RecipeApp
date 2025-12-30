@@ -1,60 +1,95 @@
-.newrecipe{
-    margin: 10px;
-    width: 700px;
+.container {
+  min-height: 100vh;
+  padding: 0;
+  background-color: var(--background);
 }
 
-nav{
-    background-color: #983C29;
-    width: 100%; // Added to cover the entire width
-    a{
-        float: left;
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-    }
+/* Professional Navigation */
+nav.topnav {
+  background: var(--primary-color);
+  width: 100%;
+  padding: 0;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.cover_photo_holder{
-    float:right;
-    width: 400px;
+nav.topnav a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: var(--transition);
+  border-radius: var(--border-radius);
+  margin: 6px 0;
+  background: transparent;
 }
 
-// .topnav a{
-//     float: left;
-//     display: block;
-//     color: white;
-//     text-align: center;
-//     padding: 14px 16px;
-//     text-decoration: none;
-//     font-size: 17px;
-// }
-
-.topnav a:hover{
-    background-color: white;
-    color: #983C29;
+nav.topnav a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.topnav a.active{
-    background-color: #4CAF50;
-    color: white;
+nav.topnav a:active {
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
-div.input-group{
-    margin: 10px 0;
+nav.topnav a:first-child {
+  font-size: 18px;
 }
 
-div textarea{
-    width:600px;
+nav.topnav a span.glyphicon {
+  font-size: 20px;
 }
 
-.container{
-    display:flex;
-    align-items: center;
-    justify-content: center;
+nav.topnav a.new-recipe-link {
+  margin-left: auto;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav.topnav a.new-recipe-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+nav.topnav a.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+}
+
+/* Main Content Area */
+.container > div {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  nav.topnav {
     flex-direction: column;
-    height: 100vh;
-    justify-content: flex-start;
+    padding: 12px;
+  }
+  
+  nav.topnav a {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  nav.topnav a[style*="float:right"] {
+    margin-left: 0;
+  }
+  
+  .container > div {
+    padding: 16px;
+  }
 }

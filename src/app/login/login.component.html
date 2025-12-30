@@ -1,8 +1,51 @@
-<div>
-    <h2>Login</h2>
-    <form (submit)="login($event)" #loginForm="ngForm">
-      <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required>
-      <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required>
-      <button type="submit">Login</button>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Sign In</h1>
+      <p class="login-subtitle">Access your recipe collection</p>
+    </div>
+
+    <form (submit)="login($event)" #loginForm="ngForm" class="login-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          class="form-control"
+          placeholder="you@example.com"
+          required
+          [class.error]="errorMessage && email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          class="form-control"
+          placeholder="Enter your password"
+          required
+          [class.error]="errorMessage && password"
+        />
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="isLoading || !email || !password"
+      >
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading">Signing in...</span>
+      </button>
     </form>
   </div>
+</div>
