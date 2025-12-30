@@ -9,6 +9,6 @@ export const environment = {
   appwriteFavoritesCollectionId: '',
   appwriteRatingsCollectionId: '',
   // Admin config
-  appwriteAdminTeamId: '',
+  appwriteAdminTeamId: '69538c8e00033cfc582b',
   superAdminUserIds: [] as string[],
 };

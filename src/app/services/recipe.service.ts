@@ -20,7 +20,9 @@ export class RecipeService {
   }
 
   private getCurrentUserSafe(): Observable<Models.User<Models.Preferences> | null> {
-    return from(this.appWriteService.account.get()).pipe(catchError(() => of(null)));
+    return from(this.appWriteService.account.get()).pipe(
+      catchError(() => of(null))
+    );
   }
 
   /**
@@ -42,7 +44,7 @@ export class RecipeService {
         );
         this.recipes.set(recipes);
         this.loading.set(false);
-    return recipes;
+        return recipes;
       }),
       catchError((error) => {
         this.error.set(error.message || 'Failed to load recipes');
@@ -69,7 +71,7 @@ export class RecipeService {
       map((document) => {
         const recipe = Recipe.recipeFromDocument(document);
         this.loading.set(false);
-    return recipe;
+        return recipe;
       }),
       catchError((error) => {
         this.error.set(error.message || 'Failed to load recipe');
@@ -82,23 +84,25 @@ export class RecipeService {
   /**
    * Upload image to Appwrite Storage
    */
-  private uploadImage(file: File, recipeId: string, fileName: string): Promise<string> {
+  private uploadImage(
+    file: File,
+    recipeId: string,
+    fileName: string
+  ): Promise<string> {
     const bucketId = environment.appwriteStorageBucketId;
-    
+
     // Validate bucket ID is configured and not empty
     if (!bucketId || typeof bucketId !== 'string' || bucketId.trim() === '') {
-      console.warn('Appwrite Storage Bucket ID not configured. Skipping image upload.');
+      console.warn(
+        'Appwrite Storage Bucket ID not configured. Skipping image upload.'
+      );
       return Promise.resolve('');
     }
 
     const fileId = ID.unique();
-    
+
     return this.storage
-      .createFile(
-        bucketId,
-        fileId,
-        file
-      )
+      .createFile(bucketId, fileId, file)
       .then((response) => {
         // Return the file preview URL
         const fileUrl = this.storage.getFileView(bucketId, response.$id);
@@ -106,7 +110,10 @@ export class RecipeService {
         return fileUrl;
       })
       .catch((error) => {
-        console.error(`Error uploading image ${fileName} for recipe ${recipeId}:`, error);
+        console.error(
+          `Error uploading image ${fileName} for recipe ${recipeId}:`,
+          error
+        );
         // Return empty string on error, recipe will still be created without image
         // In production, you might want to throw or handle this differently
         return '';
@@ -116,10 +123,13 @@ export class RecipeService {
   /**
    * Add a new recipe with image uploads
    */
-  addRecipe(recipe: Recipe, files: {
-    cover_photo?: File;
-    instruction_photo?: (File | undefined)[];
-  }): Observable<Recipe> {
+  addRecipe(
+    recipe: Recipe,
+    files: {
+      cover_photo?: File;
+      instruction_photo?: (File | undefined)[];
+    }
+  ): Observable<Recipe> {
     this.loading.set(true);
     this.error.set(null);
 
@@ -143,7 +153,8 @@ export class RecipeService {
         // Helpful for future community features
         if (user) {
           recipeData.author_id = user.$id;
-          recipeData.author_name = (user as any).name || (user as any).email || 'User';
+          recipeData.author_name =
+            (user as any).name || (user as any).email || 'User';
         }
 
         // If Appwrite collection has "Document Security" enabled, permissions must be set.
@@ -178,7 +189,9 @@ export class RecipeService {
         const uploadedRecipe = Recipe.recipeFromDocument(document);
 
         // Handle file uploads
-        return from(this.handleFileUploads(recipeId, files, uploadedRecipe)).pipe(
+        return from(
+          this.handleFileUploads(recipeId, files, uploadedRecipe)
+        ).pipe(
           map(() => {
             this.loading.set(false);
             return uploadedRecipe;
@@ -268,10 +281,14 @@ export class RecipeService {
   /**
    * Update an existing recipe
    */
-  updateRecipe(recipeId: string, recipe: Recipe, files?: {
-    cover_photo?: File;
-    instruction_photo?: (File | undefined)[];
-  }): Observable<Recipe> {
+  updateRecipe(
+    recipeId: string,
+    recipe: Recipe,
+    files?: {
+      cover_photo?: File;
+      instruction_photo?: (File | undefined)[];
+    }
+  ): Observable<Recipe> {
     this.loading.set(true);
     this.error.set(null);
 
@@ -330,7 +347,7 @@ export class RecipeService {
       map(() => {
         // Remove from local state
         const currentRecipes = this.recipes();
-        this.recipes.set(currentRecipes.filter(r => r.id !== recipeId));
+        this.recipes.set(currentRecipes.filter((r) => r.id !== recipeId));
         this.loading.set(false);
       }),
       catchError((error) => {
@@ -365,15 +382,17 @@ export class RecipeService {
         const allRecipes = resp.documents.map((document) =>
           Recipe.recipeFromDocument(document)
         );
-        
+
         // Client-side filtering as fallback
         const filtered = allRecipes.filter(
           (recipe) =>
             recipe.title.toLowerCase().includes(query.toLowerCase()) ||
             recipe.description.toLowerCase().includes(query.toLowerCase()) ||
-            recipe.keywords?.some(k => k.toLowerCase().includes(query.toLowerCase()))
+            recipe.keywords?.some((k) =>
+              k.toLowerCase().includes(query.toLowerCase())
+            )
         );
-        
+
         this.loading.set(false);
         return filtered;
       }),

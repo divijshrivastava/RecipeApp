@@ -11,7 +11,7 @@ import { RatingsService, RatingSummary } from '../../services/ratings.service';
 @Component({
   selector: 'app-recipe-details',
   templateUrl: './recipe-details.component.html',
-  styleUrls: ['./recipe-details.component.scss']
+  styleUrls: ['./recipe-details.component.scss'],
 })
 export class RecipeDetailsComponent implements OnInit, OnDestroy {
   recipe = signal<Recipe | null>(null);
@@ -61,7 +61,8 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     this.error_text = undefined;
     this.ratingError = null;
 
-    this.recipeService.getRecipeById(recipeId)
+    this.recipeService
+      .getRecipeById(recipeId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (recipe) => {
@@ -70,18 +71,24 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
           this.load_error = false;
 
           // Community info (best-effort)
-          this.ratings.getSummary(recipeId).pipe(takeUntil(this.destroy$)).subscribe((s) => {
-            this.ratingSummary = s;
-          });
-          this.ratings.getMyRating(recipeId).pipe(takeUntil(this.destroy$)).subscribe((r) => {
-            this.myRating = r;
-          });
+          this.ratings
+            .getSummary(recipeId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((s) => {
+              this.ratingSummary = s;
+            });
+          this.ratings
+            .getMyRating(recipeId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((r) => {
+              this.myRating = r;
+            });
         },
         error: (error) => {
           this.load_error = true;
           this.error_text = error.message || 'Failed to load recipe';
           this.loading = false;
-        }
+        },
       });
   }
 
@@ -113,15 +120,18 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     if (!this.canDelete()) return;
 
     if (confirm(`Are you sure you want to delete "${recipe.title}"?`)) {
-      this.recipeService.deleteRecipe(recipe.id)
+      this.recipeService
+        .deleteRecipe(recipe.id)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
             this.router.navigate(['/recipes']);
           },
           error: (error) => {
-            alert('Failed to delete recipe: ' + (error.message || 'Unknown error'));
-          }
+            alert(
+              'Failed to delete recipe: ' + (error.message || 'Unknown error')
+            );
+          },
         });
     }
   }
@@ -133,7 +143,9 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     this.ratingError = null;
 
     if (!this.auth.isLoggedIn()) {
-      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: this.router.url },
+      });
       return;
     }
 
@@ -143,9 +155,12 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.myRating = value;
-          this.ratings.getSummary(recipe.id).pipe(takeUntil(this.destroy$)).subscribe((s) => {
-            this.ratingSummary = s;
-          });
+          this.ratings
+            .getSummary(recipe.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((s) => {
+              this.ratingSummary = s;
+            });
         },
         error: (err) => {
           this.ratingError =

@@ -14,10 +14,7 @@ export class AuthService {
   loading = signal<boolean>(false);
   isAdmin = signal<boolean>(false);
 
-  constructor(
-    private appwrite: AppwriteService,
-    private router: Router
-  ) {
+  constructor(private appwrite: AppwriteService, private router: Router) {
     // Best-effort fetch; app should still work if unauthenticated.
     this.refreshUser().subscribe();
   }
@@ -41,7 +38,9 @@ export class AuthService {
     );
   }
 
-  private computeIsAdmin(user: Models.User<Models.Preferences> | null): Observable<boolean> {
+  private computeIsAdmin(
+    user: Models.User<Models.Preferences> | null
+  ): Observable<boolean> {
     if (!user) return of(false);
 
     const explicitAdmins = environment.superAdminUserIds || [];
@@ -73,12 +72,10 @@ export class AuthService {
 
   login(email: string, password: string): Observable<Models.Session> {
     this.loading.set(true);
-    return from(this.appwrite.account.createEmailPasswordSession(email, password)).pipe(
-      switchMap((session) =>
-        this.refreshUser().pipe(
-          map(() => session)
-        )
-      ),
+    return from(
+      this.appwrite.account.createEmailPasswordSession(email, password)
+    ).pipe(
+      switchMap((session) => this.refreshUser().pipe(map(() => session))),
       tap(() => this.loading.set(false)),
       catchError((err) => {
         this.loading.set(false);
@@ -110,5 +107,3 @@ export class AuthService {
     );
   }
 }
-
-
