@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Models } from 'appwrite';
 import { from, Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AppwriteService } from './appwrite.service';
 
 @Injectable({
@@ -30,6 +30,22 @@ export class AuthService {
         return of(null);
       }),
       tap(() => this.loading.set(false))
+    );
+  }
+
+  login(email: string, password: string): Observable<Models.Session> {
+    this.loading.set(true);
+    return from(this.appwrite.account.createEmailPasswordSession(email, password)).pipe(
+      switchMap((session) =>
+        this.refreshUser().pipe(
+          map(() => session)
+        )
+      ),
+      tap(() => this.loading.set(false)),
+      catchError((err) => {
+        this.loading.set(false);
+        return throwError(() => err);
+      })
     );
   }
 

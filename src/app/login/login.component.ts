@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { Account, Client } from 'appwrite';
 import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from '../../environments/environment';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,19 +13,17 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
   isLoading: boolean = false;
-  private account: Account;
   private returnUrl: string | null = null;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
-    const client = new Client()
-      .setEndpoint(environment.appwriteEndpoint)
-      .setProject(environment.appwriteProjectId);
-    
-    this.account = new Account(client);
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private auth: AuthService
+  ) {
     this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
   }
 
-  async login(event: Event) {
+  login(event: Event) {
     event.preventDefault();
     this.errorMessage = '';
     this.isLoading = true;
@@ -37,19 +34,24 @@ export class LoginComponent {
       return;
     }
 
-    try {
-      await this.account.createEmailPasswordSession(this.email, this.password);
-      this.router.navigateByUrl(this.returnUrl || '/newRecipe');
-    } catch (error: any) {
-      this.isLoading = false;
-      if (error.code === 401) {
-        this.errorMessage = 'Invalid email or password. Please try again.';
-      } else if (error.message) {
-        this.errorMessage = error.message;
-      } else {
-        this.errorMessage = 'An error occurred during login. Please try again.';
-      }
-      console.error('Login failed:', error);
-    }
+    this.auth.login(this.email, this.password).subscribe({
+      next: () => {
+        this.router.navigateByUrl(this.returnUrl || '/newRecipe');
+      },
+      error: (error: any) => {
+        this.isLoading = false;
+        if (error?.code === 401) {
+          this.errorMessage = 'Invalid email or password. Please try again.';
+        } else if (error?.message) {
+          this.errorMessage = error.message;
+        } else {
+          this.errorMessage = 'An error occurred during login. Please try again.';
+        }
+        console.error('Login failed:', error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
   }
 }
