@@ -10,7 +10,8 @@
     "test": "ng test",
     "start:dev": "ng serve --configuration=development",
     "deploy:vercel": "npm run build:prod && vercel --cwd dist/recipe-app/browser",
-    "deploy:netlify": "npm run build:prod && netlify deploy --prod --dir=dist/recipe-app/browser"
+    "deploy:netlify": "npm run build:prod && netlify deploy --prod --dir=dist/recipe-app/browser",
+    "vercel-build": "ng build --configuration production"
   },
   "private": true,
   "dependencies": {
